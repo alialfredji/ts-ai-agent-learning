@@ -1,12 +1,12 @@
 /**
  * Pulumi AWS Infrastructure for AI Agents
- * 
+ *
  * Provisions:
  * - AWS App Runner service (containerized agents)
  * - RDS PostgreSQL with pgvector (or reference to Neon/Supabase)
  * - SSM Parameter Store for secrets
  * - CloudWatch Logs
- * 
+ *
  * SECURITY NOTE: This is a learning example. In production:
  * - Use IAM authentication for database access
  * - Store DATABASE_URL components separately, not as a single string

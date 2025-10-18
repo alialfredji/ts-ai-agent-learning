@@ -1,10 +1,10 @@
 /**
  * Unified Model Provider Abstraction
- * 
+ *
  * This module provides a common interface for interacting with different AI model providers
  * (OpenAI, Anthropic, Google Gemini). It allows you to switch providers via environment
  * variables or programmatically.
- * 
+ *
  * Usage:
  *   import { getModelProvider, ModelProvider } from '@lib/models/provider';
  *   const provider = getModelProvider();
@@ -130,15 +130,21 @@ export class AnthropicProvider implements ModelProvider {
     const systemMessage = messages.find((m) => m.role === 'system')?.content || '';
     const nonSystemMessages = messages.filter((m) => m.role !== 'system');
 
-    const response = await this.client.messages.create({
+    // Note: tools parameter requires newer Anthropic SDK version
+    const createParams: any = {
       model: this.model,
       system: systemMessage,
-      messages: nonSystemMessages as any,
+      messages: nonSystemMessages,
       max_tokens: maxTokens || 4096,
       temperature,
       stop_sequences: stopSequences,
-      tools: tools as any,
-    });
+    };
+
+    if (tools) {
+      createParams.tools = tools;
+    }
+
+    const response = await this.client.messages.create(createParams);
 
     const content = response.content[0];
     const text = content.type === 'text' ? content.text : '';

@@ -48,6 +48,7 @@ pnpm tsx templates/agent-basic/index.ts "Hello!"
 Start here if you're new to AI agents.
 
 #### [01: Tool Calling CLI](beginner/01-tool-calling-cli)
+
 Build a CLI agent with function calling capabilities.
 
 **Learn**: Tool schemas with Zod, function execution, multi-provider support
@@ -57,6 +58,7 @@ pnpm tsx beginner/01-tool-calling-cli/index.ts
 ```
 
 #### [02: Local RAG](beginner/02-local-rag)
+
 Create a RAG system over local Markdown documents with pgvector.
 
 **Learn**: Embeddings, vector search, RAG architecture, Next.js UI
@@ -70,6 +72,7 @@ cd beginner/02-local-rag/app && pnpm dev
 ```
 
 #### [03: Inbox Triager](beginner/03-inbox-triager)
+
 Build an email triaging agent with structured outputs.
 
 **Learn**: Structured outputs, rule-based planning, JSON schemas
@@ -83,6 +86,7 @@ pnpm tsx beginner/03-inbox-triager/index.ts
 Level up with more complex workflows.
 
 #### [01: Research Agent](intermediate/01-research-agent)
+
 Multi-step research agent with LangGraph and citations.
 
 **Learn**: LangGraph state machines, web search integration, LangSmith evaluation
@@ -92,6 +96,7 @@ pnpm tsx intermediate/01-research-agent/index.ts "Query here"
 ```
 
 #### [02: Agentic RAG](intermediate/02-agentic-rag)
+
 RAG with critique-refine loop and hallucination detection.
 
 **Learn**: Iterative refinement, self-critique, confidence scoring
@@ -101,6 +106,7 @@ pnpm tsx intermediate/02-agentic-rag/index.ts "Question here"
 ```
 
 #### [03: Background Worker](intermediate/03-background-worker)
+
 Async task processing agent with Convex workflows.
 
 **Learn**: Background jobs, queue management, Convex integration
@@ -115,6 +121,7 @@ pnpm tsx intermediate/03-background-worker/enqueue-task.ts
 Production-grade multi-agent systems.
 
 #### [01: Multi-Agent PR Reviewer](advanced/01-multi-agent-pr-reviewer)
+
 Specialized agents (planner, reviewer, tester, fixer) with OpenTelemetry tracing.
 
 **Learn**: Multi-agent coordination, LangGraph orchestration, distributed tracing
@@ -124,6 +131,7 @@ pnpm tsx advanced/01-multi-agent-pr-reviewer/index.ts
 ```
 
 #### [02: Autonomous Data Pipeline](advanced/02-autonomous-data-pipeline)
+
 Self-managing ETL pipeline with AI validation and reporting.
 
 **Learn**: Autonomous operations, data validation, error recovery
@@ -133,6 +141,7 @@ pnpm tsx advanced/02-autonomous-data-pipeline/index.ts
 ```
 
 #### [03: Guarded Execution](advanced/03-guarded-execution)
+
 Secure agent environment with policies, sandboxing, and safety checks.
 
 **Learn**: Security policies, sandboxed tools, guardrails
@@ -146,6 +155,7 @@ pnpm tsx advanced/03-guarded-execution/index.ts
 Jump-start your projects with production-ready templates.
 
 ### [Basic Agent](templates/agent-basic)
+
 Minimal agent with rate limiting and budget guards.
 
 ```bash
@@ -153,6 +163,7 @@ pnpm tsx templates/agent-basic/index.ts "Your message"
 ```
 
 ### [Evaluation Harness](templates/eval-harness)
+
 Test and evaluate your agents with LangSmith + Vitest.
 
 ```bash
@@ -173,6 +184,7 @@ docker-compose up -d
 ```
 
 **Includes**:
+
 - PostgreSQL with pgvector
 - OpenTelemetry Collector
 - Jaeger for trace visualization
@@ -192,6 +204,7 @@ pulumi up
 ```
 
 **Provisions**:
+
 - Container service (App Runner / Cloud Run)
 - PostgreSQL database
 - Secrets management
@@ -214,6 +227,7 @@ terraform apply
 ### GitHub Actions
 
 CI/CD workflows included:
+
 - **Lint & Test**: Runs on every push
 - **Deploy**: Automatic deployment with OIDC
 - **Evals**: Agent evaluation on PRs
@@ -268,17 +282,20 @@ Comprehensive guides for every aspect:
 Built-in safety features:
 
 ### Rate Limiting
+
 ```bash
 RATE_LIMIT_PER_MINUTE=60
 ```
 
 ### Budget Guards
+
 ```bash
 ENABLE_BUDGET_GUARD=true
 MAX_COST_PER_DAY=10.00
 ```
 
 ### Input Validation
+
 ```typescript
 import { validateInput, detectPromptInjection } from '@lib/security';
 ```
@@ -290,17 +307,20 @@ See [docs/SECURITY.md](docs/SECURITY.md) for complete guide.
 Track performance and debug issues:
 
 ### LangSmith Integration
+
 ```bash
 LANGCHAIN_TRACING_V2=true
 LANGCHAIN_API_KEY=...
 ```
 
 ### OpenTelemetry
+
 ```bash
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 ```
 
 ### Token Usage Tracking
+
 ```typescript
 import { globalTokenLogger } from '@lib/utils/token-counter';
 console.log(globalTokenLogger.getSummary());
@@ -341,18 +361,21 @@ Keep costs under control:
 ### Choose Your Journey
 
 **🎓 Student / Hobbyist**
+
 1. Start with [beginner projects](#-beginner-level)
 2. Use free tiers (Gemini, Neon, Vercel)
 3. Focus on learning concepts
 4. Deploy to Vercel for showcasing
 
 **👨‍💻 Professional Developer**
+
 1. Review all beginner projects
 2. Deep dive into intermediate projects
 3. Study infrastructure templates
 4. Practice evaluation and monitoring
 
 **🏢 Building for Production**
+
 1. Review security and observability docs
 2. Set up proper infrastructure (Pulumi/Terraform)
 3. Implement evaluation pipeline
@@ -361,22 +384,26 @@ Keep costs under control:
 ## 🚢 Deployment Options
 
 ### Development
+
 ```bash
 # Local with Docker
 docker-compose up -d
 ```
 
 ### Vercel (Next.js UIs)
+
 ```bash
 vercel deploy
 ```
 
 ### Convex (Background Workers)
+
 ```bash
 npx convex deploy
 ```
 
 ### AWS / GCP (Full Stack)
+
 ```bash
 # With Pulumi
 pulumi up
@@ -442,6 +469,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ## 🙏 Acknowledgments
 
 Built with:
+
 - [LangChain](https://langchain.com) & [LangGraph](https://langchain-ai.github.io/langgraph/)
 - [OpenAI](https://openai.com), [Anthropic](https://anthropic.com), [Google AI](https://ai.google)
 - [Vercel AI SDK](https://sdk.vercel.ai)

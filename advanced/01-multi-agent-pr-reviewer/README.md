@@ -62,26 +62,31 @@ pnpm tsx advanced/01-multi-agent-pr-reviewer/index.ts \
 ## Agents
 
 ### 1. Planner Agent
+
 - Analyzes PR scope and complexity
 - Creates review strategy
 - Assigns tasks to specialized agents
 
 ### 2. Code Reviewer Agent
+
 - Reviews code quality and style
 - Checks for anti-patterns
 - Suggests improvements
 
 ### 3. Test Analyzer Agent
+
 - Evaluates test coverage
 - Checks test quality
 - Suggests missing tests
 
 ### 4. Security Scanner Agent
+
 - Scans for vulnerabilities
 - Checks dependencies
 - Reviews authentication/authorization
 
 ### 5. Auto-Fix Agent
+
 - Generates fix suggestions
 - Creates fix commits (optional)
 - Validates fixes
@@ -89,6 +94,7 @@ pnpm tsx advanced/01-multi-agent-pr-reviewer/index.ts \
 ## OpenTelemetry Tracing
 
 View traces in Jaeger or your preferred backend:
+
 ```bash
 # Start Jaeger locally
 docker run -d --name jaeger \

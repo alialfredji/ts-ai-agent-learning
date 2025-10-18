@@ -18,12 +18,14 @@ AI agents face unique security challenges:
 ### Storage
 
 ✅ **Do**:
+
 - Store in environment variables
 - Use secrets managers (AWS SSM, GCP Secret Manager)
 - Rotate keys regularly
 - Use different keys per environment
 
 ❌ **Don't**:
+
 - Commit keys to git
 - Hard-code in source files
 - Share keys between projects
@@ -37,12 +39,12 @@ function validateApiKey(key: string) {
   if (!key) {
     throw new Error('API key required');
   }
-  
+
   if (key.startsWith('sk-proj-')) {
     // Project-scoped key (recommended)
     return true;
   }
-  
+
   console.warn('Using account-level API key - consider using project keys');
   return true;
 }
@@ -60,11 +62,11 @@ import { globalRateLimiter } from '@lib/security/rate-limiter';
 async function handleRequest(userId: string, request: any) {
   // Check rate limit
   const allowed = await globalRateLimiter.checkLimit(userId);
-  
+
   if (!allowed) {
     throw new Error('Rate limit exceeded. Please try again later.');
   }
-  
+
   // Process request
   return await processRequest(request);
 }
@@ -92,17 +94,17 @@ const TIERS: Record<string, UserTier> = {
   free: {
     requestsPerMinute: 10,
     maxTokensPerRequest: 1000,
-    dailyBudget: 0.10,
+    dailyBudget: 0.1,
   },
   pro: {
     requestsPerMinute: 60,
     maxTokensPerRequest: 4000,
-    dailyBudget: 5.00,
+    dailyBudget: 5.0,
   },
   enterprise: {
     requestsPerMinute: 300,
     maxTokensPerRequest: 8000,
-    dailyBudget: 50.00,
+    dailyBudget: 50.0,
   },
 };
 ```
@@ -115,7 +117,8 @@ const TIERS: Record<string, UserTier> = {
 import { z } from 'zod';
 
 const userInputSchema = z.object({
-  query: z.string()
+  query: z
+    .string()
     .min(1)
     .max(1000)
     .regex(/^[a-zA-Z0-9\s\.,!?-]+$/, 'Invalid characters detected'),
@@ -143,7 +146,7 @@ const INJECTION_PATTERNS = [
 ];
 
 function detectPromptInjection(input: string): boolean {
-  return INJECTION_PATTERNS.some(pattern => pattern.test(input));
+  return INJECTION_PATTERNS.some((pattern) => pattern.test(input));
 }
 
 function handleUserInput(input: string) {
@@ -151,7 +154,7 @@ function handleUserInput(input: string) {
     console.warn('Potential prompt injection detected:', input);
     throw new Error('Invalid input detected');
   }
-  
+
   return input;
 }
 ```
@@ -178,12 +181,12 @@ async function executeTool(toolName: string, args: any, userId: string) {
   if (POLICY.deniedTools.includes(toolName)) {
     throw new Error(`Tool ${toolName} is not allowed`);
   }
-  
+
   // Check if tool requires approval
   if (POLICY.requireApproval.includes(toolName)) {
     await requestHumanApproval(userId, toolName, args);
   }
-  
+
   // Execute in sandbox
   return await executeSandboxed(toolName, args);
 }
@@ -194,28 +197,25 @@ async function executeTool(toolName: string, args: any, userId: string) {
 ```typescript
 import path from 'path';
 
-const ALLOWED_DIRS = [
-  path.resolve('./data'),
-  path.resolve('./uploads'),
-];
+const ALLOWED_DIRS = [path.resolve('./data'), path.resolve('./uploads')];
 
 function validatePath(filePath: string): boolean {
   const resolved = path.resolve(filePath);
-  
+
   // Prevent directory traversal
   if (resolved.includes('..')) {
     return false;
   }
-  
+
   // Check if in allowed directory
-  return ALLOWED_DIRS.some(dir => resolved.startsWith(dir));
+  return ALLOWED_DIRS.some((dir) => resolved.startsWith(dir));
 }
 
 async function readFile(filePath: string) {
   if (!validatePath(filePath)) {
     throw new Error('Access denied: Invalid file path');
   }
-  
+
   // Safe to read
   return await fs.readFile(filePath, 'utf-8');
 }
@@ -235,23 +235,23 @@ const PII_PATTERNS = {
 
 function detectPII(text: string): string[] {
   const detected: string[] = [];
-  
+
   for (const [type, pattern] of Object.entries(PII_PATTERNS)) {
     if (pattern.test(text)) {
       detected.push(type);
     }
   }
-  
+
   return detected;
 }
 
 function redactPII(text: string): string {
   let redacted = text;
-  
+
   for (const pattern of Object.values(PII_PATTERNS)) {
     redacted = redacted.replace(pattern, '[REDACTED]');
   }
-  
+
   return redacted;
 }
 ```
@@ -274,10 +274,10 @@ const RETENTION: DataRetentionPolicy = {
 async function cleanupOldData() {
   const cutoffDate = new Date();
   cutoffDate.setDate(cutoffDate.getDate() - RETENTION.conversationHistoryDays);
-  
+
   // Delete old conversations
   await db.conversations.deleteMany({
-    createdAt: { $lt: cutoffDate }
+    createdAt: { $lt: cutoffDate },
   });
 }
 ```
@@ -289,26 +289,26 @@ async function cleanupOldData() {
 ```typescript
 function authenticateRequest(req: Request): string | null {
   const authHeader = req.headers.get('Authorization');
-  
+
   if (!authHeader?.startsWith('Bearer ')) {
     return null;
   }
-  
+
   const token = authHeader.substring(7);
-  
+
   // Validate token (implement your logic)
   const userId = validateToken(token);
-  
+
   return userId;
 }
 
 async function handleRequest(req: Request) {
   const userId = authenticateRequest(req);
-  
+
   if (!userId) {
     return new Response('Unauthorized', { status: 401 });
   }
-  
+
   // Process authenticated request
   return processRequest(req, userId);
 }
@@ -332,7 +332,7 @@ const PERMISSIONS: Record<Role, string[]> = {
 function checkPermission(userId: string, action: string): boolean {
   const userRole = getUserRole(userId);
   const permissions = PERMISSIONS[userRole];
-  
+
   return permissions.includes(action);
 }
 ```
@@ -356,10 +356,10 @@ function logSecurityEvent(event: Omit<AuditLog, 'timestamp'>) {
     ...event,
     timestamp: new Date(),
   };
-  
+
   // Write to secure audit log
   console.log('[AUDIT]', JSON.stringify(log));
-  
+
   // Also send to SIEM if available
   // await sendToSIEM(log);
 }
@@ -381,14 +381,10 @@ logSecurityEvent({
 ```typescript
 // Validate required environment variables on startup
 function validateEnvironment() {
-  const required = [
-    'OPENAI_API_KEY',
-    'DATABASE_URL',
-    'JWT_SECRET',
-  ];
-  
-  const missing = required.filter(key => !process.env[key]);
-  
+  const required = ['OPENAI_API_KEY', 'DATABASE_URL', 'JWT_SECRET'];
+
+  const missing = required.filter((key) => !process.env[key]);
+
   if (missing.length > 0) {
     throw new Error(`Missing required environment variables: ${missing.join(', ')}`);
   }
@@ -403,7 +399,7 @@ validateEnvironment();
 // Check key age and warn if old
 function checkKeyAge(keyCreatedAt: Date) {
   const ageInDays = (Date.now() - keyCreatedAt.getTime()) / (1000 * 60 * 60 * 24);
-  
+
   if (ageInDays > 90) {
     console.warn('API key is over 90 days old. Consider rotating.');
   }
@@ -418,12 +414,12 @@ function checkKeyAge(keyCreatedAt: Date) {
 // Middleware to redirect HTTP to HTTPS
 function enforceHTTPS(req: Request): Response | null {
   const url = new URL(req.url);
-  
+
   if (url.protocol === 'http:' && process.env.NODE_ENV === 'production') {
     url.protocol = 'https:';
     return Response.redirect(url.toString(), 301);
   }
-  
+
   return null;
 }
 ```
@@ -491,10 +487,10 @@ async function handleSecurityIncident(incidentType: string) {
     resource: incidentType,
     status: 'failure',
   });
-  
+
   // 2. Notify team
   await notifySecurityTeam(incidentType);
-  
+
   // 3. Take automated action
   switch (incidentType) {
     case 'rate_limit_exceeded':

@@ -1,6 +1,6 @@
 /**
  * Multi-Agent PR Reviewer
- * 
+ *
  * Orchestrates multiple specialized agents to review pull requests.
  */
 
@@ -64,8 +64,7 @@ async function codeReviewerAgent(file: { filename: string; patch: string }) {
         messages: [
           {
             role: 'system',
-            content:
-              'You are a code review expert. Review the code changes and provide feedback.',
+            content: 'You are a code review expert. Review the code changes and provide feedback.',
           },
           {
             role: 'user',

@@ -1,6 +1,6 @@
 /**
  * Rate Limiter
- * 
+ *
  * Simple in-memory rate limiter for API calls.
  * For production, consider using Redis-backed rate limiting.
  */

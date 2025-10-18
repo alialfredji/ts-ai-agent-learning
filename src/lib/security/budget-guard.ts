@@ -1,6 +1,6 @@
 /**
  * Budget Guard
- * 
+ *
  * Tracks API usage costs and enforces budget limits.
  */
 
@@ -51,8 +51,7 @@ export class BudgetGuard {
       output: 0.002,
     };
 
-    const estimatedCost =
-      (inputTokens / 1000) * costs.input + (outputTokens / 1000) * costs.output;
+    const estimatedCost = (inputTokens / 1000) * costs.input + (outputTokens / 1000) * costs.output;
 
     return {
       inputTokens,

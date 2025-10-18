@@ -16,6 +16,7 @@ AI agents are non-deterministic and can fail in subtle ways. Evaluation helps:
 ### LangSmith
 
 Comprehensive evaluation platform with:
+
 - Dataset management
 - Automatic evaluation runs
 - Comparison views
@@ -25,6 +26,7 @@ Comprehensive evaluation platform with:
 ### Vitest
 
 Standard testing framework for:
+
 - Unit tests for agent components
 - Integration tests for workflows
 - Regression tests
@@ -74,22 +76,19 @@ interface EvalMetrics {
 }
 
 // Accuracy evaluator
-async function evaluateAccuracy(
-  actual: string,
-  expected: string
-): Promise<number> {
+async function evaluateAccuracy(actual: string, expected: string): Promise<number> {
   if (!expected) return 1.0; // No expected output
-  
+
   // Simple exact match
   if (actual.toLowerCase() === expected.toLowerCase()) {
     return 1.0;
   }
-  
+
   // Fuzzy match
   if (actual.toLowerCase().includes(expected.toLowerCase())) {
     return 0.8;
   }
-  
+
   // Use LLM as judge
   return await llmJudge(actual, expected);
 }
@@ -97,12 +96,13 @@ async function evaluateAccuracy(
 // LLM-as-judge evaluator
 async function llmJudge(actual: string, expected: string): Promise<number> {
   const provider = getModelProvider();
-  
+
   const response = await provider.complete({
     messages: [
       {
         role: 'system',
-        content: 'You are an evaluation judge. Rate the similarity between two texts on a scale of 0.0 to 1.0.',
+        content:
+          'You are an evaluation judge. Rate the similarity between two texts on a scale of 0.0 to 1.0.',
       },
       {
         role: 'user',
@@ -112,7 +112,7 @@ async function llmJudge(actual: string, expected: string): Promise<number> {
     maxTokens: 10,
     temperature: 0,
   });
-  
+
   const rating = parseFloat(response.content);
   return isNaN(rating) ? 0.0 : rating;
 }
@@ -133,17 +133,17 @@ describe('Agent Evaluation', () => {
   for (const example of evalDataset) {
     it(`should handle: "${example.input.substring(0, 50)}..."`, async () => {
       const startTime = Date.now();
-      
+
       // Run agent
       const response = await runAgent(example.input);
-      
+
       const latency = Date.now() - startTime;
-      
+
       // Evaluate accuracy
       const accuracy = example.expectedOutput
         ? await evaluateAccuracy(response.content, example.expectedOutput)
         : 1.0;
-      
+
       // Record metrics
       const metrics: EvalMetrics = {
         accuracy,
@@ -152,13 +152,13 @@ describe('Agent Evaluation', () => {
         cost: response.usage.totalTokens * 0.00001, // Rough estimate
         quality: accuracy, // Simplified
       };
-      
+
       results.push(metrics);
-      
+
       // Assertions
       expect(accuracy).toBeGreaterThan(0.7); // At least 70% accurate
       expect(latency).toBeLessThan(10000); // Under 10 seconds
-      
+
       console.log('Metrics:', metrics);
     });
   }
@@ -171,7 +171,7 @@ describe('Agent Evaluation', () => {
       totalCost: sum(results.map((r) => r.cost)),
       passed: results.filter((r) => r.accuracy > 0.7).length,
     };
-    
+
     console.log('\n' + '='.repeat(80));
     console.log('EVALUATION SUMMARY');
     console.log('='.repeat(80));
@@ -181,12 +181,9 @@ describe('Agent Evaluation', () => {
     console.log(`Total Cost: $${summary.totalCost.toFixed(4)}`);
     console.log(`Pass Rate: ${((summary.passed / summary.total) * 100).toFixed(1)}%`);
     console.log('='.repeat(80) + '\n');
-    
+
     // Save to file for CI
-    fs.writeFileSync(
-      'eval-results/summary.json',
-      JSON.stringify(summary, null, 2)
-    );
+    fs.writeFileSync('eval-results/summary.json', JSON.stringify(summary, null, 2));
   });
 });
 
@@ -237,7 +234,7 @@ async function evaluateSafety(response: string): Promise<boolean> {
     /(?:how to|guide to) (?:make|create|build) (?:bomb|weapon|poison)/i,
     // Add more patterns
   ];
-  
+
   return !harmfulPatterns.some((pattern) => pattern.test(response));
 }
 ```
@@ -250,11 +247,11 @@ Is the response appropriately detailed?
 function evaluateConciseness(response: string, expectedLength: number): number {
   const length = response.split(' ').length;
   const ratio = length / expectedLength;
-  
+
   if (ratio > 1.5 || ratio < 0.5) {
     return 0.5; // Too verbose or too brief
   }
-  
+
   return 1.0;
 }
 ```
@@ -270,9 +267,9 @@ const models = ['gpt-3.5-turbo', 'gpt-4', 'claude-3-opus'];
 
 for (const model of models) {
   console.log(`\nEvaluating ${model}...`);
-  
+
   const results = await runEvaluation(dataset, { model });
-  
+
   console.log(`Average accuracy: ${results.avgAccuracy}`);
   console.log(`Average cost: $${results.avgCost}`);
   console.log(`Quality/cost ratio: ${results.avgAccuracy / results.avgCost}`);
@@ -313,16 +310,16 @@ cp eval-results/summary.json eval-results/baseline.json
 function compareToBaseline() {
   const baseline = JSON.parse(fs.readFileSync('eval-results/baseline.json', 'utf-8'));
   const current = JSON.parse(fs.readFileSync('eval-results/summary.json', 'utf-8'));
-  
+
   const accuracyDelta = current.avgAccuracy - baseline.avgAccuracy;
   const latencyDelta = current.avgLatency - baseline.avgLatency;
   const costDelta = current.totalCost - baseline.totalCost;
-  
+
   console.log('Comparison to baseline:');
   console.log(`Accuracy: ${accuracyDelta > 0 ? '+' : ''}${(accuracyDelta * 100).toFixed(1)}%`);
   console.log(`Latency: ${latencyDelta > 0 ? '+' : ''}${latencyDelta.toFixed(0)}ms`);
   console.log(`Cost: ${costDelta > 0 ? '+' : ''}$${costDelta.toFixed(4)}`);
-  
+
   if (accuracyDelta < -0.05) {
     console.error('❌ Accuracy regression detected!');
     process.exit(1);
@@ -370,15 +367,11 @@ for (const example of evalDataset) {
 ```typescript
 import { runOnDataset } from 'langchain/smith';
 
-await runOnDataset(
-  (input) => runAgent(input.query),
-  'agent-eval',
-  {
-    evaluationConfig: {
-      evaluators: ['accuracy', 'latency', 'cost'],
-    },
-  }
-);
+await runOnDataset((input) => runAgent(input.query), 'agent-eval', {
+  evaluationConfig: {
+    evaluators: ['accuracy', 'latency', 'cost'],
+  },
+});
 ```
 
 ## CI/CD Integration

@@ -1,6 +1,6 @@
 /**
  * Inbox Triager Agent
- * 
+ *
  * Categorizes and prioritizes emails using structured outputs.
  */
 
@@ -8,9 +8,12 @@ import { getModelProvider } from '../../src/lib/models/provider.js';
 import { triageEmailSchema, type TriageResult } from './schemas.js';
 import { sampleEmails } from './sample-emails.js';
 
-async function triageEmail(
-  email: { subject: string; from: string; body: string; timestamp: string }
-): Promise<TriageResult> {
+async function triageEmail(email: {
+  subject: string;
+  from: string;
+  body: string;
+  timestamp: string;
+}): Promise<TriageResult> {
   const provider = getModelProvider();
 
   const prompt = `You are an email triaging assistant. Analyze the following email and provide categorization, priority, and suggested actions.
@@ -93,10 +96,13 @@ async function main() {
   console.log(`   High priority: ${highPriority}`);
   console.log(`   Requires immediate attention: ${urgent}`);
 
-  const categoryCounts = results.reduce((acc, r) => {
-    acc[r.triage.category] = (acc[r.triage.category] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
+  const categoryCounts = results.reduce(
+    (acc, r) => {
+      acc[r.triage.category] = (acc[r.triage.category] || 0) + 1;
+      return acc;
+    },
+    {} as Record<string, number>
+  );
 
   console.log('\n   By category:');
   Object.entries(categoryCounts).forEach(([cat, count]) => {

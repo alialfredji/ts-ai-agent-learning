@@ -136,7 +136,7 @@ export const tools = [
 /**
  * Execute a tool by name
  */
-export async function executeTool(name: string, args: any) {
+export async function executeTool(name: string, args: any): Promise<any> {
   const tool = tools.find((t) => t.name === name);
   if (!tool) {
     throw new Error(`Unknown tool: ${name}`);
@@ -145,7 +145,7 @@ export async function executeTool(name: string, args: any) {
   try {
     // Validate args with Zod
     const validatedArgs = tool.schema.parse(args);
-    return await tool.execute(validatedArgs);
+    return await tool.execute(validatedArgs as never);
   } catch (error) {
     return { error: (error as Error).message };
   }

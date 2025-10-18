@@ -5,6 +5,7 @@ Comprehensive observability setup for AI agents.
 ## Overview
 
 Observability is critical for AI agents to:
+
 - Debug complex multi-step workflows
 - Track token usage and costs
 - Monitor performance and latency
@@ -46,7 +47,9 @@ import { getModelProvider } from '@lib/models/provider';
 // Tracing is automatic when LANGCHAIN_TRACING_V2=true
 const provider = getModelProvider();
 const response = await provider.complete({
-  messages: [/* ... */]
+  messages: [
+    /* ... */
+  ],
 });
 
 // View trace in LangSmith dashboard
@@ -79,18 +82,18 @@ async function myFunction() {
   return tracer.startActiveSpan('operation-name', async (span) => {
     try {
       span.setAttribute('input', 'some-value');
-      
+
       // Your code here
       const result = await doWork();
-      
+
       span.setAttribute('result', result);
       span.setStatus({ code: SpanStatusCode.OK });
-      
+
       return result;
     } catch (error) {
-      span.setStatus({ 
-        code: SpanStatusCode.ERROR, 
-        message: (error as Error).message 
+      span.setStatus({
+        code: SpanStatusCode.ERROR,
+        message: (error as Error).message,
       });
       throw error;
     } finally {
@@ -206,14 +209,14 @@ class PerformanceMonitor {
 
   async track<T>(fn: () => Promise<T>, label: string): Promise<T> {
     const start = Date.now();
-    
+
     try {
       const result = await fn();
       const duration = Date.now() - start;
-      
+
       this.metrics.latency.push(duration);
       console.log(`[${label}] Duration: ${duration}ms`);
-      
+
       return result;
     } catch (error) {
       console.error(`[${label}] Error:`, error);
@@ -222,9 +225,9 @@ class PerformanceMonitor {
   }
 
   getStats() {
-    const avgLatency = 
+    const avgLatency =
       this.metrics.latency.reduce((a, b) => a + b, 0) / this.metrics.latency.length;
-    
+
     return {
       avgLatency: avgLatency.toFixed(2),
       p95Latency: this.percentile(this.metrics.latency, 95).toFixed(2),
@@ -267,7 +270,7 @@ function log(level: LogEntry['level'], message: string, context?: Record<string,
     message,
     context,
   };
-  
+
   console.log(JSON.stringify(entry));
 }
 
@@ -286,6 +289,7 @@ log('error', 'API call failed', { error: err.message, retryCount: 3 });
 ### What to Log
 
 ✅ **Do log**:
+
 - Request start/completion
 - Important state changes
 - Errors with context
@@ -293,6 +297,7 @@ log('error', 'API call failed', { error: err.message, retryCount: 3 });
 - Cost information
 
 ❌ **Don't log**:
+
 - API keys or secrets
 - Full request/response bodies (use IDs instead)
 - PII (unless necessary and secured)

@@ -38,12 +38,17 @@
     "beginner/**/*",
     "intermediate/**/*",
     "advanced/**/*",
-    "templates/**/*"
+    "templates/**/*",
+    "infra/**/*"
   ],
   "exclude": [
     "node_modules",
     "dist",
     "**/*.spec.ts",
-    "**/*.test.ts"
+    "**/*.test.ts",
+    "**/convex/**/*",
+    "infra/pulumi/**/*",
+    "beginner/02-local-rag/**/*",
+    "intermediate/01-research-agent/**/*"
   ]
 }

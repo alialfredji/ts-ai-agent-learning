@@ -15,7 +15,7 @@ interface AgenticRAGResult {
 /**
  * Mock retrieval function (in production, use actual vector store)
  */
-async function retrieve(query: string): Promise<string[]> {
+async function retrieve(_query: string): Promise<string[]> {
   // Mock context documents
   return [
     'RAG (Retrieval-Augmented Generation) enhances LLMs by providing relevant context from external knowledge sources.',

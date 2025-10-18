@@ -1,6 +1,7 @@
 # Pulumi GCP Infrastructure
 
 Deploys the AI Agents application to Google Cloud Platform using:
+
 - **Cloud Run**: Serverless container platform
 - **Cloud SQL**: PostgreSQL with pgvector
 - **Secret Manager**: Secrets management
@@ -89,6 +90,7 @@ pulumi config set containerImage us-central1-docker.pkg.dev/YOUR_PROJECT_ID/ai-a
 ## Costs
 
 Estimated monthly costs (us-central1, minimal usage):
+
 - Cloud Run: ~$0-5/month (pay-per-use)
 - Cloud SQL db-f1-micro: ~$7/month
 - Secret Manager: ~$0.06/month
@@ -99,6 +101,7 @@ Cloud Run is cheaper due to scale-to-zero.
 ## Monitoring
 
 View logs:
+
 ```bash
 gcloud run services logs read ai-agents-prod --limit=50
 ```

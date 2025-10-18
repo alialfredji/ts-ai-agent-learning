@@ -1,6 +1,6 @@
 /**
  * Document indexing script
- * 
+ *
  * Indexes local Markdown files into the vector database.
  */
 
@@ -16,8 +16,8 @@ async function indexDocuments() {
   if (!process.env.DATABASE_URL) {
     throw new Error(
       'DATABASE_URL environment variable is required. ' +
-      'Please set it in your .env file or environment. ' +
-      'Example: DATABASE_URL=postgresql://user:password@localhost:5432/agents_db'
+        'Please set it in your .env file or environment. ' +
+        'Example: DATABASE_URL=postgresql://user:password@localhost:5432/agents_db'
     );
   }
 

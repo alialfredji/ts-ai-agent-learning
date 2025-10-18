@@ -35,6 +35,7 @@ vercel env add DATABASE_URL
 ### Environment Variables
 
 Required in Vercel dashboard:
+
 - `OPENAI_API_KEY` (or your provider's key)
 - `DATABASE_URL` (Neon or Supabase recommended)
 - `MODEL_PROVIDER`
@@ -66,6 +67,7 @@ npx convex deploy
 ### Environment Variables
 
 Set in Convex dashboard:
+
 - API keys for model providers
 - Database connection strings
 - Webhook secrets
@@ -110,6 +112,7 @@ pulumi up
 ### Monitoring
 
 View logs in CloudWatch:
+
 ```bash
 aws logs tail /aws/apprunner/<service-name> --follow
 ```
@@ -192,6 +195,7 @@ docker-compose logs -f api
 ```
 
 Services:
+
 - API: http://localhost:3000
 - Postgres: localhost:5432
 - Jaeger UI: http://localhost:16686
@@ -199,6 +203,7 @@ Services:
 ### Production Considerations
 
 For production self-hosting:
+
 1. Use proper secrets management
 2. Set up reverse proxy (nginx/Caddy)
 3. Enable HTTPS
@@ -217,6 +222,7 @@ Serverless Postgres with pgvector support.
 4. Add to environment variables
 
 **Pros**:
+
 - Free tier available
 - Serverless (no idle costs)
 - Automatic backups
@@ -232,6 +238,7 @@ Full backend platform with Postgres + pgvector.
 4. Copy connection string
 
 **Pros**:
+
 - Free tier generous
 - Additional features (auth, storage, realtime)
 - Good dashboard
@@ -309,6 +316,7 @@ DATABASE_URL=postgresql://localhost:5432/agents_db
 ### Staging
 
 Use separate API keys and database:
+
 ```bash
 MODEL_PROVIDER=openai
 OPENAI_API_KEY=sk-staging-...
@@ -318,6 +326,7 @@ DATABASE_URL=postgresql://staging-db/agents_db
 ### Production
 
 Best practices:
+
 1. Use secrets manager (AWS SSM, GCP Secret Manager)
 2. Separate API keys per environment
 3. Enable budget guards
@@ -329,12 +338,14 @@ Best practices:
 ### OpenTelemetry
 
 Enable tracing:
+
 ```bash
 OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318
 OTEL_SERVICE_NAME=ai-agent
 ```
 
 View traces in Jaeger:
+
 ```bash
 docker-compose up -d jaeger
 open http://localhost:16686
@@ -343,6 +354,7 @@ open http://localhost:16686
 ### LangSmith
 
 Enable for all agents:
+
 ```bash
 LANGCHAIN_TRACING_V2=true
 LANGCHAIN_API_KEY=...
@@ -352,6 +364,7 @@ LANGCHAIN_PROJECT=production
 ### Custom Metrics
 
 Track important metrics:
+
 - Request latency
 - Token usage
 - Error rates
@@ -385,6 +398,7 @@ Track important metrics:
 ### Caching
 
 Add Redis for:
+
 - Embedding cache
 - Rate limiting
 - Session storage
@@ -396,6 +410,7 @@ Add Redis for:
    - Prod: GPT-4, Claude Opus/Sonnet
 
 2. **Enable budget guards**:
+
    ```bash
    ENABLE_BUDGET_GUARD=true
    MAX_COST_PER_DAY=10.00
@@ -432,6 +447,7 @@ psql $DATABASE_URL -c "SELECT 1"
 ### High costs
 
 Check token usage:
+
 ```typescript
 import { globalTokenLogger } from '@lib/utils/token-counter';
 console.log(globalTokenLogger.getSummary());

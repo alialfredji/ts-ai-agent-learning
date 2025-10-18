@@ -1,10 +1,9 @@
 /**
  * Tool Calling CLI Agent
- * 
+ *
  * A simple command-line agent that demonstrates function calling with multiple tools.
  */
 
-import { z } from 'zod';
 import { getModelProvider } from '../../src/lib/models/provider.js';
 import { tools, executeTool } from './tools.js';
 
@@ -14,9 +13,9 @@ async function runAgent() {
   console.log('Ask me anything! I have access to tools like calculator, weather, and files.');
   console.log('---\n');
 
-  const messages = [
+  const messages: Array<{ role: 'system' | 'user' | 'assistant'; content: string }> = [
     {
-      role: 'system' as const,
+      role: 'system',
       content:
         'You are a helpful assistant with access to various tools. ' +
         'Use the provided tools when needed to answer user questions accurately.',
@@ -28,7 +27,7 @@ async function runAgent() {
   console.log(`User: ${userQuery}\n`);
 
   messages.push({
-    role: 'user' as const,
+    role: 'user',
     content: userQuery,
   });
 
@@ -64,7 +63,7 @@ async function runAgent() {
 
       // Add tool result to messages
       messages.push({
-        role: 'assistant' as const,
+        role: 'assistant',
         content: `Tool ${toolName} returned: ${JSON.stringify(result)}`,
       });
     }

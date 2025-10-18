@@ -95,11 +95,13 @@ Database URL: `postgresql://postgres:postgres@localhost:5432/agents_db`
 ### Option 2: Managed Services
 
 **Neon** (Recommended for production):
+
 1. Sign up at [neon.tech](https://neon.tech)
 2. Create a project with pgvector
 3. Copy connection string to `.env`
 
 **Supabase**:
+
 1. Sign up at [supabase.com](https://supabase.com)
 2. Create a project
 3. Enable pgvector extension
@@ -161,6 +163,7 @@ pnpm format
 ### "Cannot find module"
 
 Make sure dependencies are installed:
+
 ```bash
 pnpm install
 ```
@@ -174,6 +177,7 @@ pnpm typecheck
 ### API Rate Limits
 
 Adjust rate limits in `.env`:
+
 ```bash
 RATE_LIMIT_PER_MINUTE=30
 MAX_COST_PER_DAY=5.00
@@ -182,6 +186,7 @@ MAX_COST_PER_DAY=5.00
 ### Database connection issues
 
 Test connection:
+
 ```bash
 psql $DATABASE_URL -c "SELECT version();"
 ```

@@ -1,6 +1,7 @@
 # Pulumi AWS Infrastructure
 
 Deploys the AI Agents application to AWS using:
+
 - **AWS App Runner**: Containerized application service
 - **RDS PostgreSQL**: Database with pgvector extension
 - **SSM Parameter Store**: Secrets management
@@ -79,6 +80,7 @@ pulumi destroy
 ## Costs
 
 Estimated monthly costs (us-east-1, minimal usage):
+
 - App Runner: ~$25/month (1 vCPU, 2GB RAM)
 - RDS db.t3.micro: ~$15/month
 - Data transfer: ~$5/month
@@ -89,6 +91,7 @@ Use Neon/Supabase free tier to reduce costs.
 ## Monitoring
 
 View logs in CloudWatch:
+
 ```bash
 aws logs tail /aws/apprunner/<service-name> --follow
 ```

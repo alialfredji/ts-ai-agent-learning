@@ -1,12 +1,12 @@
 /**
  * Pulumi GCP Infrastructure for AI Agents
- * 
+ *
  * Provisions:
  * - Cloud Run service (containerized agents)
  * - Cloud SQL PostgreSQL with pgvector
  * - Secret Manager for secrets
  * - Cloud Logging
- * 
+ *
  * SECURITY NOTE: This is a learning example. In production:
  * - Use Cloud SQL Auth Proxy instead of public IP
  * - Enable Cloud SQL IAM authentication

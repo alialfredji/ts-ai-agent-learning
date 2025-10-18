@@ -1,6 +1,6 @@
 /**
  * Token counting utilities
- * 
+ *
  * Simple approximation for token counting.
  * For production, use tiktoken or provider-specific APIs.
  */
@@ -12,16 +12,16 @@ export function estimateTokens(text: string): number {
 
 export function estimateMessagesTokens(messages: Array<{ role: string; content: string }>): number {
   let total = 0;
-  
+
   for (const message of messages) {
     // Account for message formatting overhead
     total += 4; // role, name, etc.
     total += estimateTokens(message.content);
   }
-  
+
   // Account for reply priming
   total += 3;
-  
+
   return total;
 }
 

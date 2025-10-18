@@ -45,10 +45,10 @@ const gemini = new GoogleProvider('api-key', 'gemini-pro');
 const response = await provider.complete({
   messages: [
     { role: 'system', content: 'You are a helpful assistant.' },
-    { role: 'user', content: 'Hello!' }
+    { role: 'user', content: 'Hello!' },
   ],
   maxTokens: 500,
-  temperature: 0.7
+  temperature: 0.7,
 });
 
 console.log(response.content);
@@ -60,11 +60,13 @@ console.log(`Tokens used: ${response.usage.totalTokens}`);
 ### OpenAI
 
 **Models**:
+
 - `gpt-4-turbo-preview` (default, most capable)
 - `gpt-4` (stable, high quality)
 - `gpt-3.5-turbo` (fast, cost-effective)
 
 **Configuration**:
+
 ```bash
 MODEL_PROVIDER=openai
 OPENAI_API_KEY=sk-...
@@ -72,23 +74,27 @@ OPENAI_MODEL=gpt-4-turbo-preview  # optional override
 ```
 
 **Features**:
+
 - ✅ Function calling
 - ✅ Streaming
 - ✅ JSON mode
 - ✅ Vision (GPT-4V)
 
 **Costs** (per 1M tokens):
+
 - GPT-4 Turbo: $10 input / $30 output
 - GPT-3.5 Turbo: $0.50 input / $1.50 output
 
 ### Anthropic (Claude)
 
 **Models**:
+
 - `claude-3-opus-20240229` (most capable)
 - `claude-3-sonnet-20240229` (balanced)
 - `claude-3-haiku-20240307` (fast, affordable)
 
 **Configuration**:
+
 ```bash
 MODEL_PROVIDER=anthropic
 ANTHROPIC_API_KEY=sk-ant-...
@@ -96,12 +102,14 @@ ANTHROPIC_MODEL=claude-3-opus-20240229  # optional
 ```
 
 **Features**:
+
 - ✅ Function calling
 - ✅ Streaming
 - ✅ 200K context window
 - ✅ Vision
 
 **Costs** (per 1M tokens):
+
 - Claude 3 Opus: $15 input / $75 output
 - Claude 3 Sonnet: $3 input / $15 output
 - Claude 3 Haiku: $0.25 input / $1.25 output
@@ -109,10 +117,12 @@ ANTHROPIC_MODEL=claude-3-opus-20240229  # optional
 ### Google (Gemini)
 
 **Models**:
+
 - `gemini-pro` (default)
 - `gemini-pro-vision` (multimodal)
 
 **Configuration**:
+
 ```bash
 MODEL_PROVIDER=google
 GOOGLE_API_KEY=...
@@ -120,24 +130,26 @@ GOOGLE_MODEL=gemini-pro  # optional
 ```
 
 **Features**:
+
 - ✅ Function calling
 - ✅ Streaming
 - ✅ Multimodal (text + images)
 - ⚠️ Limited function calling vs OpenAI/Anthropic
 
 **Costs** (per 1M tokens):
+
 - Gemini Pro: $0.50 input / $1.50 output (generous free tier)
 
 ## Provider Comparison
 
-| Feature | OpenAI | Anthropic | Google |
-|---------|--------|-----------|--------|
-| Function calling | Excellent | Excellent | Good |
-| Context window | 128K | 200K | 32K |
-| Streaming | Yes | Yes | Yes |
-| Cost (relative) | Medium | High | Low |
-| Latency | Fast | Fast | Very Fast |
-| Quality | Excellent | Excellent | Good |
+| Feature          | OpenAI    | Anthropic | Google    |
+| ---------------- | --------- | --------- | --------- |
+| Function calling | Excellent | Excellent | Good      |
+| Context window   | 128K      | 200K      | 32K       |
+| Streaming        | Yes       | Yes       | Yes       |
+| Cost (relative)  | Medium    | High      | Low       |
+| Latency          | Fast      | Fast      | Very Fast |
+| Quality          | Excellent | Excellent | Good      |
 
 ## Switching Providers
 
@@ -195,11 +207,13 @@ console.log(`Remaining: $${summary.remainingBudget.toFixed(2)}`);
 ### Choose Cost-Effective Models
 
 For development:
+
 - OpenAI: `gpt-3.5-turbo`
 - Anthropic: `claude-3-haiku-20240307`
 - Google: `gemini-pro` (free tier)
 
 For production:
+
 - OpenAI: `gpt-4-turbo-preview`
 - Anthropic: `claude-3-opus-20240229` or `claude-3-sonnet-20240229`
 - Google: `gemini-pro` (cost-effective)
@@ -228,7 +242,7 @@ export class CustomProvider implements ModelProvider {
     return {
       content: '...',
       finishReason: 'stop',
-      usage: { inputTokens: 0, outputTokens: 0, totalTokens: 0 }
+      usage: { inputTokens: 0, outputTokens: 0, totalTokens: 0 },
     };
   }
 }

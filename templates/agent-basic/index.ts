@@ -1,6 +1,6 @@
 /**
  * Basic Agent Template
- * 
+ *
  * A minimal starting point for building AI agents.
  */
 
