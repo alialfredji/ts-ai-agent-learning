@@ -2,10 +2,16 @@
 
 Complete setup instructions for the TypeScript AI Agents curriculum.
 
+**Updated for v2.0 (October 2025)** - Modern tooling and dependencies.
+
 ## Prerequisites
 
-- **Node.js 20+**: Use nvm or install from [nodejs.org](https://nodejs.org)
-- **pnpm**: `npm install -g pnpm`
+- **Node.js 22+** (LTS): Use nvm or install from [nodejs.org](https://nodejs.org)
+  ```bash
+  nvm install 22
+  nvm use 22
+  ```
+- **pnpm 9+**: `npm install -g pnpm@9`
 - **Git**: For version control
 - **Docker** (optional): For local PostgreSQL and observability tools
 
@@ -125,14 +131,18 @@ psql agents_db -c "CREATE EXTENSION vector;"
 
 ## Project Structure
 
+**New in v2.0**: Clear separation between education and infrastructure.
+
 ```
-├── beginner/          # Beginner-level projects
-├── intermediate/      # Intermediate projects
-├── advanced/          # Advanced projects
-├── templates/         # Reusable templates
-├── infra/            # Infrastructure as code
-├── docs/             # Documentation
-└── src/              # Shared libraries
+typescript-ai-agents-curriculum/
+├── curriculum/        # 📚 Learning Content (Education)
+│   ├── beginner/     # Beginner-level projects
+│   ├── intermediate/ # Intermediate projects
+│   └── advanced/     # Advanced projects
+├── templates/         # 🎨 Reusable templates
+├── infra/            # 🏗️ Infrastructure as code
+├── docs/             # 📖 Documentation
+└── src/              # 🔧 Shared libraries
     └── lib/
         ├── models/   # Model provider abstraction
         ├── security/ # Rate limiting, budget guards
@@ -191,11 +201,23 @@ Test connection:
 psql $DATABASE_URL -c "SELECT version();"
 ```
 
+## Technology Stack (v2.0)
+
+| Tool | Version | Purpose |
+|------|---------|---------|
+| Node.js | 22 LTS | Runtime |
+| TypeScript | 5.6+ | Language |
+| pnpm | 9.12+ | Package manager |
+| ESLint | 9+ | Linting |
+| Vitest | 2+ | Testing |
+| LangChain | 0.3+ | AI orchestration |
+
 ## Next Steps
 
 - Read [MODELS.md](./MODELS.md) to learn about switching providers
-- Check out [beginner/01-tool-calling-cli](../beginner/01-tool-calling-cli) for your first project
+- Check out [curriculum/beginner/01-tool-calling-cli](../curriculum/beginner/01-tool-calling-cli) for your first project
 - Review [DEPLOYMENT.md](./DEPLOYMENT.md) for production deployment
+- See [MIGRATION.md](../MIGRATION.md) if upgrading from v1.x
 
 ## Support
 

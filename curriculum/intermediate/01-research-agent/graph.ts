@@ -3,7 +3,7 @@
  */
 
 import { StateGraph, END } from '@langchain/langgraph';
-import { getModelProvider } from '../../src/lib/models/provider.js';
+import { getModelProvider } from '../../../src/lib/models/provider.js';
 
 export interface ResearchState {
   query: string;

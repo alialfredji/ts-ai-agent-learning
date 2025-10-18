@@ -60,7 +60,7 @@ export class BudgetGuard {
     };
   }
 
-  async checkBudget(estimatedCost: number): Promise<boolean> {
+  checkBudget(estimatedCost: number): boolean {
     this.resetIfNewDay();
 
     if (this.dailySpend + estimatedCost > this.maxDailySpend) {

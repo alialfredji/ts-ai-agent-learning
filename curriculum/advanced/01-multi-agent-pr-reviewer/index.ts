@@ -5,7 +5,7 @@
  */
 
 import { trace, SpanStatusCode } from '@opentelemetry/api';
-import { getModelProvider } from '../../src/lib/models/provider.js';
+import { getModelProvider } from '../../../src/lib/models/provider.js';
 
 const tracer = trace.getTracer('pr-reviewer');
 

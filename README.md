@@ -1,24 +1,48 @@
 # TypeScript AI Agents Curriculum
 
-A production-grade learning curriculum for building AI agents with TypeScript, complete with infrastructure templates and deployment guides.
+A production-grade learning curriculum for building AI agents with TypeScript, complete with infrastructure templates and deployment guides. **Updated October 2025** with the latest tools, frameworks, and best practices.
 
 ## 🎯 Overview
 
 This repository provides a structured path from beginner to advanced AI agent development, covering:
 
 - **Multiple model providers** (OpenAI, Anthropic, Google)
-- **Beginner to advanced projects** with working code
+- **Beginner to advanced projects** with working code organized in a dedicated curriculum
 - **Production infrastructure** (Docker, Pulumi, Terraform)
 - **Best practices** for security, observability, and evaluation
 - **Reusable templates** to kickstart your projects
+- **Modern tooling** (TypeScript 5.6, ESLint 9, Vitest 2, Node 22 LTS)
+
+## 📂 Project Structure
+
+The project is organized to clearly separate **setup/infrastructure** from **learning content**:
+
+```
+typescript-ai-agents-curriculum/
+├── curriculum/              # 📚 Learning content (education)
+│   ├── beginner/           # Start here if you're new to AI agents
+│   ├── intermediate/       # Level up with complex workflows
+│   └── advanced/           # Production-grade multi-agent systems
+├── src/                    # 🔧 Shared libraries and utilities
+│   └── lib/
+│       ├── models/         # Model provider abstraction
+│       ├── security/       # Security utilities
+│       └── utils/          # Common utilities
+├── templates/              # 🎨 Reusable project templates
+├── infra/                  # 🏗️ Infrastructure as code
+│   ├── docker/             # Local development environment
+│   ├── pulumi/             # AWS & GCP deployment
+│   └── terraform/          # Alternative IaC
+└── docs/                   # 📖 Documentation
+```
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
-- Node.js 20+ (use [nvm](https://github.com/nvm-sh/nvm))
-- pnpm: `npm install -g pnpm`
-- API key from [OpenAI](https://platform.openai.com), [Anthropic](https://console.anthropic.com), or [Google](https://makersuite.google.com)
+- **Node.js 22+** (LTS) - use [nvm](https://github.com/nvm-sh/nvm): `nvm install 22 && nvm use 22`
+- **pnpm 9+**: `npm install -g pnpm@9`
+- API key from [OpenAI](https://platform.openai.com), [Anthropic](https://console.anthropic.com), or [Google](https://ai.google.dev)
 
 ### Setup
 
@@ -27,7 +51,7 @@ This repository provides a structured path from beginner to advanced AI agent de
 git clone <repo-url>
 cd typescript-ai-agents-curriculum
 
-# Install dependencies
+# Install dependencies (using pnpm 9)
 pnpm install
 
 # Configure environment
@@ -43,21 +67,23 @@ pnpm tsx templates/agent-basic/index.ts "Hello!"
 
 ## 📚 Curriculum Map
 
+All learning content is organized under the `curriculum/` directory for easy navigation.
+
 ### 🟢 Beginner Level
 
 Start here if you're new to AI agents.
 
-#### [01: Tool Calling CLI](beginner/01-tool-calling-cli)
+#### [01: Tool Calling CLI](curriculum/beginner/01-tool-calling-cli)
 
 Build a CLI agent with function calling capabilities.
 
 **Learn**: Tool schemas with Zod, function execution, multi-provider support
 
 ```bash
-pnpm tsx beginner/01-tool-calling-cli/index.ts
+pnpm tsx curriculum/beginner/01-tool-calling-cli/index.ts
 ```
 
-#### [02: Local RAG](beginner/02-local-rag)
+#### [02: Local RAG](curriculum/beginner/02-local-rag)
 
 Create a RAG system over local Markdown documents with pgvector.
 
@@ -65,47 +91,47 @@ Create a RAG system over local Markdown documents with pgvector.
 
 ```bash
 # Index documents
-pnpm tsx beginner/02-local-rag/scripts/index.ts
+pnpm tsx curriculum/beginner/02-local-rag/scripts/index.ts
 
 # Start UI
-cd beginner/02-local-rag/app && pnpm dev
+cd curriculum/beginner/02-local-rag/app && pnpm dev
 ```
 
-#### [03: Inbox Triager](beginner/03-inbox-triager)
+#### [03: Inbox Triager](curriculum/beginner/03-inbox-triager)
 
 Build an email triaging agent with structured outputs.
 
 **Learn**: Structured outputs, rule-based planning, JSON schemas
 
 ```bash
-pnpm tsx beginner/03-inbox-triager/index.ts
+pnpm tsx curriculum/beginner/03-inbox-triager/index.ts
 ```
 
 ### 🟡 Intermediate Level
 
 Level up with more complex workflows.
 
-#### [01: Research Agent](intermediate/01-research-agent)
+#### [01: Research Agent](curriculum/intermediate/01-research-agent)
 
 Multi-step research agent with LangGraph and citations.
 
 **Learn**: LangGraph state machines, web search integration, LangSmith evaluation
 
 ```bash
-pnpm tsx intermediate/01-research-agent/index.ts "Query here"
+pnpm tsx curriculum/intermediate/01-research-agent/index.ts "Query here"
 ```
 
-#### [02: Agentic RAG](intermediate/02-agentic-rag)
+#### [02: Agentic RAG](curriculum/intermediate/02-agentic-rag)
 
 RAG with critique-refine loop and hallucination detection.
 
 **Learn**: Iterative refinement, self-critique, confidence scoring
 
 ```bash
-pnpm tsx intermediate/02-agentic-rag/index.ts "Question here"
+pnpm tsx curriculum/intermediate/02-agentic-rag/index.ts "Question here"
 ```
 
-#### [03: Background Worker](intermediate/03-background-worker)
+#### [03: Background Worker](curriculum/intermediate/03-background-worker)
 
 Async task processing agent with Convex workflows.
 
@@ -113,41 +139,41 @@ Async task processing agent with Convex workflows.
 
 ```bash
 npx convex dev
-pnpm tsx intermediate/03-background-worker/enqueue-task.ts
+pnpm tsx curriculum/intermediate/03-background-worker/enqueue-task.ts
 ```
 
 ### 🔴 Advanced Level
 
 Production-grade multi-agent systems.
 
-#### [01: Multi-Agent PR Reviewer](advanced/01-multi-agent-pr-reviewer)
+#### [01: Multi-Agent PR Reviewer](curriculum/advanced/01-multi-agent-pr-reviewer)
 
 Specialized agents (planner, reviewer, tester, fixer) with OpenTelemetry tracing.
 
 **Learn**: Multi-agent coordination, LangGraph orchestration, distributed tracing
 
 ```bash
-pnpm tsx advanced/01-multi-agent-pr-reviewer/index.ts
+pnpm tsx curriculum/advanced/01-multi-agent-pr-reviewer/index.ts
 ```
 
-#### [02: Autonomous Data Pipeline](advanced/02-autonomous-data-pipeline)
+#### [02: Autonomous Data Pipeline](curriculum/advanced/02-autonomous-data-pipeline)
 
 Self-managing ETL pipeline with AI validation and reporting.
 
 **Learn**: Autonomous operations, data validation, error recovery
 
 ```bash
-pnpm tsx advanced/02-autonomous-data-pipeline/index.ts
+pnpm tsx curriculum/advanced/02-autonomous-data-pipeline/index.ts
 ```
 
-#### [03: Guarded Execution](advanced/03-guarded-execution)
+#### [03: Guarded Execution](curriculum/advanced/03-guarded-execution)
 
 Secure agent environment with policies, sandboxing, and safety checks.
 
 **Learn**: Security policies, sandboxed tools, guardrails
 
 ```bash
-pnpm tsx advanced/03-guarded-execution/index.ts
+pnpm tsx curriculum/advanced/03-guarded-execution/index.ts
 ```
 
 ## 🎨 Templates
@@ -234,13 +260,13 @@ CI/CD workflows included:
 
 ## 🔑 Model Providers
 
-Switch between providers seamlessly.
+Switch between providers seamlessly with the latest models.
 
-### Supported Providers
+### Supported Providers (Updated October 2025)
 
-- **OpenAI**: GPT-4, GPT-3.5-turbo
-- **Anthropic**: Claude 3 (Opus, Sonnet, Haiku)
-- **Google**: Gemini Pro
+- **OpenAI**: GPT-4o, GPT-4 Turbo, GPT-4o-mini
+- **Anthropic**: Claude 3.5 Sonnet, Claude 3 Opus, Claude 3 Haiku
+- **Google**: Gemini 1.5 Pro, Gemini 1.5 Flash
 
 ### Configuration
 
@@ -342,19 +368,43 @@ See [docs/EVALUATION.md](docs/EVALUATION.md) for details.
 
 ## 💰 Cost Optimization
 
-Keep costs under control:
+Keep costs under control with modern model selection:
 
 1. **Use appropriate models**:
-   - Development: GPT-3.5-turbo, Claude Haiku, Gemini
-   - Production: GPT-4, Claude Opus/Sonnet
+   - Development: GPT-4o-mini, Claude 3 Haiku, Gemini 1.5 Flash
+   - Production: GPT-4o, Claude 3.5 Sonnet, Gemini 1.5 Pro
 
-2. **Enable budget guards**: Automatic spend limits
+2. **Enable budget guards**: Automatic spend limits in `src/lib/security/budget-guard.ts`
 
-3. **Monitor usage**: Track tokens and costs
+3. **Monitor usage**: Track tokens and costs with `src/lib/utils/token-counter.ts`
 
-4. **Serverless databases**: Neon or Supabase (free tier)
+4. **Serverless databases**: Neon, Supabase, or Turso (generous free tiers)
 
-5. **Cache embeddings**: Avoid recomputation
+5. **Cache embeddings**: Avoid recomputation in RAG systems
+
+6. **Use streaming**: Reduce perceived latency without extra cost
+
+## ✨ What's New in 2.0 (October 2025)
+
+This major update brings the curriculum to the cutting edge:
+
+### 🆕 Updated Dependencies
+
+- **TypeScript 5.6**: Latest language features and performance improvements
+- **Node.js 22 LTS**: Long-term support with enhanced performance
+- **pnpm 9**: Faster package management with improved workspace support
+- **ESLint 9**: New flat config format for simpler configuration
+- **Vitest 2**: Latest testing framework with better performance
+- **Vercel AI SDK 4**: Enhanced streaming and tool calling
+- **LangChain 0.3**: Latest agent orchestration capabilities
+- **Anthropic SDK 0.36**: Support for Claude 3.5 models
+- **OpenAI SDK 4.67**: Latest GPT-4o and function calling features
+
+### 📁 Restructured Organization
+
+- **Clear separation**: `curriculum/` for learning, root for infrastructure
+- **Better navigation**: Easy to find educational content vs. setup files
+- **Improved imports**: Updated paths throughout the project
 
 ## 🗺️ Learning Path
 
@@ -362,24 +412,24 @@ Keep costs under control:
 
 **🎓 Student / Hobbyist**
 
-1. Start with [beginner projects](#-beginner-level)
-2. Use free tiers (Gemini, Neon, Vercel)
+1. Start with [curriculum/beginner projects](#-beginner-level)
+2. Use free tiers (Gemini 1.5 Flash, Neon, Vercel)
 3. Focus on learning concepts
 4. Deploy to Vercel for showcasing
 
 **👨‍💻 Professional Developer**
 
-1. Review all beginner projects
-2. Deep dive into intermediate projects
-3. Study infrastructure templates
+1. Review all [curriculum/beginner projects](#-beginner-level)
+2. Deep dive into [curriculum/intermediate projects](#-intermediate-level)
+3. Study infrastructure templates in `infra/`
 4. Practice evaluation and monitoring
 
 **🏢 Building for Production**
 
-1. Review security and observability docs
-2. Set up proper infrastructure (Pulumi/Terraform)
-3. Implement evaluation pipeline
-4. Use advanced patterns from advanced projects
+1. Review security and observability docs in `docs/`
+2. Set up proper infrastructure (Pulumi/Terraform in `infra/`)
+3. Implement evaluation pipeline from `templates/eval-harness`
+4. Use advanced patterns from [curriculum/advanced projects](#-advanced-level)
 
 ## 🚢 Deployment Options
 
@@ -414,44 +464,56 @@ terraform apply
 
 See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for complete guide.
 
-## 📦 Project Structure
+## 📦 Detailed Project Structure
 
 ```
-├── beginner/              # Beginner projects
-│   ├── 01-tool-calling-cli
-│   ├── 02-local-rag
-│   └── 03-inbox-triager
-├── intermediate/          # Intermediate projects
-│   ├── 01-research-agent
-│   ├── 02-agentic-rag
-│   └── 03-background-worker
-├── advanced/              # Advanced projects
-│   ├── 01-multi-agent-pr-reviewer
-│   ├── 02-autonomous-data-pipeline
-│   └── 03-guarded-execution
-├── templates/             # Reusable templates
+typescript-ai-agents-curriculum/
+├── curriculum/            # 📚 Learning Content (Education)
+│   ├── beginner/         # Beginner projects
+│   │   ├── 01-tool-calling-cli
+│   │   ├── 02-local-rag
+│   │   └── 03-inbox-triager
+│   ├── intermediate/     # Intermediate projects
+│   │   ├── 01-research-agent
+│   │   ├── 02-agentic-rag
+│   │   └── 03-background-worker
+│   └── advanced/         # Advanced projects
+│       ├── 01-multi-agent-pr-reviewer
+│       ├── 02-autonomous-data-pipeline
+│       └── 03-guarded-execution
+├── src/                  # 🔧 Shared Libraries
+│   └── lib/
+│       ├── models/       # Model provider abstraction
+│       ├── security/     # Security utilities
+│       └── utils/        # Common utilities
+├── templates/            # 🎨 Reusable Templates
 │   ├── agent-basic
 │   ├── agentic-rag
 │   ├── multi-agent-graph
 │   └── eval-harness
-├── infra/                 # Infrastructure
-│   ├── docker/
-│   ├── pulumi/
-│   ├── terraform/
-│   └── github-actions/
-├── docs/                  # Documentation
-│   ├── SETUP.md
-│   ├── MODELS.md
-│   ├── DEPLOYMENT.md
-│   ├── OBSERVABILITY.md
-│   ├── SECURITY.md
-│   └── EVALUATION.md
-└── src/                   # Shared libraries
-    └── lib/
-        ├── models/        # Model provider abstraction
-        ├── security/      # Security utilities
-        └── utils/         # Common utilities
+├── infra/                # 🏗️ Infrastructure
+│   ├── docker/           # Local development
+│   ├── pulumi/           # AWS & GCP deployment
+│   │   ├── aws/
+│   │   └── gcp/
+│   └── terraform/        # Alternative IaC
+│       ├── aws/
+│       └── gcp/
+└── docs/                 # 📖 Documentation
+    ├── SETUP.md
+    ├── MODELS.md
+    ├── DEPLOYMENT.md
+    ├── OBSERVABILITY.md
+    ├── SECURITY.md
+    └── EVALUATION.md
 ```
+
+### Why This Structure?
+
+- **Clear Separation**: Education (`curriculum/`) vs. Infrastructure (`infra/`, `src/`)
+- **Easy Navigation**: Know exactly where to find learning content
+- **Reusable Code**: Shared utilities in `src/lib/` used across all projects
+- **Production Ready**: Templates and infrastructure for real deployments
 
 ## 🤝 Contributing
 
@@ -483,15 +545,33 @@ Built with:
 - 💬 [Discussions](https://github.com/your-repo/discussions)
 - 🐦 [Twitter](https://twitter.com/your-handle)
 
+## 🛠️ Technology Stack
+
+This curriculum uses modern, production-ready tools:
+
+| Category | Technology | Version | Purpose |
+|----------|-----------|---------|---------|
+| Runtime | Node.js | 22 LTS | JavaScript runtime |
+| Language | TypeScript | 5.6+ | Type-safe development |
+| Package Manager | pnpm | 9.12+ | Fast, efficient installs |
+| Linting | ESLint | 9+ | Code quality |
+| Formatting | Prettier | 3.3+ | Code formatting |
+| Testing | Vitest | 2.1+ | Unit/integration tests |
+| Build | tsx | 4.19+ | Fast TypeScript execution |
+| AI Orchestration | LangChain | 0.3+ | Agent frameworks |
+| AI SDK | Vercel AI | 4.0+ | Streaming & tools |
+| Observability | OpenTelemetry | 0.54+ | Tracing & metrics |
+
 ## 🗓️ Roadmap
 
 - [ ] Add more intermediate projects
-- [ ] Support for additional model providers (Mistral, Cohere)
+- [ ] Support for additional model providers (Mistral, Cohere, Llama)
 - [ ] Video tutorials for each project
 - [ ] Kubernetes deployment templates
 - [ ] Advanced evaluation techniques
-- [ ] Multi-modal agent examples
+- [ ] Multi-modal agent examples (vision, audio)
+- [ ] Fine-tuning examples with modern models
 
 ---
 
-**Ready to build amazing AI agents?** Start with the [Setup Guide](docs/SETUP.md)!
+**Ready to build amazing AI agents?** Start with the [Setup Guide](docs/SETUP.md) or jump straight to [curriculum/beginner/01-tool-calling-cli](curriculum/beginner/01-tool-calling-cli)!
