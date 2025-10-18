@@ -2,18 +2,21 @@
  * LangGraph state machine for research agent
  */
 
-import { StateGraph, END } from '@langchain/langgraph';
+import { StateGraph, END, Annotation } from '@langchain/langgraph';
 import { getModelProvider } from '../../../src/lib/models/provider.js';
 
-export interface ResearchState {
-  query: string;
-  plan?: string[];
-  searchResults?: Array<{ title: string; url: string; snippet: string }>;
-  extractedInfo?: string[];
-  report?: string;
-  citations?: string[];
-  currentStep?: string;
-}
+// Define state using Annotation (v1.0 API)
+const ResearchStateAnnotation = Annotation.Root({
+  query: Annotation<string>,
+  plan: Annotation<string[] | undefined>,
+  searchResults: Annotation<Array<{ title: string; url: string; snippet: string }> | undefined>,
+  extractedInfo: Annotation<string[] | undefined>,
+  report: Annotation<string | undefined>,
+  citations: Annotation<string[] | undefined>,
+  currentStep: Annotation<string | undefined>,
+});
+
+export type ResearchState = typeof ResearchStateAnnotation.State;
 
 /**
  * Node: Plan Research
@@ -139,17 +142,7 @@ async function synthesizeReport(state: ResearchState): Promise<Partial<ResearchS
  * Create the research agent graph
  */
 export function createResearchAgent() {
-  const workflow = new StateGraph<ResearchState>({
-    channels: {
-      query: null,
-      plan: null,
-      searchResults: null,
-      extractedInfo: null,
-      report: null,
-      citations: null,
-      currentStep: null,
-    },
-  });
+  const workflow = new StateGraph(ResearchStateAnnotation);
 
   // Add nodes
   workflow.addNode('plan', planResearch);

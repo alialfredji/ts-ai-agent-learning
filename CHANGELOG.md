@@ -109,6 +109,7 @@ See [MIGRATION.md](MIGRATION.md) for complete instructions.
 ---
 
 **Legend**:
+
 - 🎉 Major Release
 - ✨ New Feature
 - 🔧 Bug Fix

@@ -33,12 +33,7 @@
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true
   },
-  "include": [
-    "src/**/*",
-    "curriculum/**/*",
-    "templates/**/*",
-    "infra/**/*"
-  ],
+  "include": ["src/**/*", "curriculum/**/*", "templates/**/*", "infra/**/*"],
   "exclude": [
     "node_modules",
     "dist",

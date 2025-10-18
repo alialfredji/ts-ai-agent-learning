@@ -549,18 +549,18 @@ Built with:
 
 This curriculum uses modern, production-ready tools:
 
-| Category | Technology | Version | Purpose |
-|----------|-----------|---------|---------|
-| Runtime | Node.js | 22 LTS | JavaScript runtime |
-| Language | TypeScript | 5.6+ | Type-safe development |
-| Package Manager | pnpm | 9.12+ | Fast, efficient installs |
-| Linting | ESLint | 9+ | Code quality |
-| Formatting | Prettier | 3.3+ | Code formatting |
-| Testing | Vitest | 2.1+ | Unit/integration tests |
-| Build | tsx | 4.19+ | Fast TypeScript execution |
-| AI Orchestration | LangChain | 0.3+ | Agent frameworks |
-| AI SDK | Vercel AI | 4.0+ | Streaming & tools |
-| Observability | OpenTelemetry | 0.54+ | Tracing & metrics |
+| Category         | Technology    | Version | Purpose                   |
+| ---------------- | ------------- | ------- | ------------------------- |
+| Runtime          | Node.js       | 22 LTS  | JavaScript runtime        |
+| Language         | TypeScript    | 5.6+    | Type-safe development     |
+| Package Manager  | pnpm          | 9.12+   | Fast, efficient installs  |
+| Linting          | ESLint        | 9+      | Code quality              |
+| Formatting       | Prettier      | 3.3+    | Code formatting           |
+| Testing          | Vitest        | 2.1+    | Unit/integration tests    |
+| Build            | tsx           | 4.19+   | Fast TypeScript execution |
+| AI Orchestration | LangChain     | 0.3+    | Agent frameworks          |
+| AI SDK           | Vercel AI     | 4.0+    | Streaming & tools         |
+| Observability    | OpenTelemetry | 0.54+   | Tracing & metrics         |
 
 ## 🗓️ Roadmap
 
