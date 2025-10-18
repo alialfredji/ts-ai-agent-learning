@@ -2,7 +2,7 @@
  * Agentic RAG with Critique-Refine Loop
  */
 
-import { getModelProvider } from '../../src/lib/models/provider.js';
+import { getModelProvider } from '../../../src/lib/models/provider.js';
 
 interface AgenticRAGResult {
   answer: string;
@@ -15,7 +15,7 @@ interface AgenticRAGResult {
 /**
  * Mock retrieval function (in production, use actual vector store)
  */
-async function retrieve(_query: string): Promise<string[]> {
+function retrieve(_query: string): string[] {
   // Mock context documents
   return [
     'RAG (Retrieval-Augmented Generation) enhances LLMs by providing relevant context from external knowledge sources.',
@@ -116,7 +116,7 @@ export async function agenticRAG(
 
     // Retrieve relevant documents
     console.log('  📚 Retrieving context...');
-    const context = await retrieve(currentQuery);
+    const context = retrieve(currentQuery);
 
     // Generate answer
     console.log('  ✍️ Generating answer...');

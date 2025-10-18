@@ -27,7 +27,7 @@ async function indexDocuments() {
   const embedder = new EmbeddingGenerator();
 
   // Read markdown files from docs directory
-  const docsDir = path.join(process.cwd(), 'beginner/02-local-rag/docs');
+  const docsDir = path.join(process.cwd(), 'curriculum/beginner/02-local-rag/docs');
   const files = await fs.readdir(docsDir);
   const markdownFiles = files.filter((f) => f.endsWith('.md'));
 

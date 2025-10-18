@@ -4,7 +4,7 @@
  * A simple command-line agent that demonstrates function calling with multiple tools.
  */
 
-import { getModelProvider } from '../../src/lib/models/provider.js';
+import { getModelProvider } from '../../../src/lib/models/provider.js';
 import { tools, executeTool } from './tools.js';
 
 async function runAgent() {

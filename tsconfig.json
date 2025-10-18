@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "ESNext",
-    "lib": ["ES2022"],
-    "moduleResolution": "bundler",
+    "target": "ES2023",
+    "module": "NodeNext",
+    "lib": ["ES2023"],
+    "moduleResolution": "NodeNext",
     "rootDir": ".",
     "outDir": "./dist",
     "baseUrl": ".",
@@ -35,9 +35,7 @@
   },
   "include": [
     "src/**/*",
-    "beginner/**/*",
-    "intermediate/**/*",
-    "advanced/**/*",
+    "curriculum/**/*",
     "templates/**/*",
     "infra/**/*"
   ],
@@ -48,7 +46,7 @@
     "**/*.test.ts",
     "**/convex/**/*",
     "infra/pulumi/**/*",
-    "beginner/02-local-rag/**/*",
-    "intermediate/01-research-agent/**/*"
+    "curriculum/beginner/02-local-rag/**/*",
+    "curriculum/intermediate/01-research-agent/**/*"
   ]
 }

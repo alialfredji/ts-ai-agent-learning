@@ -20,7 +20,7 @@ export class RateLimiter {
     this.windowMs = options.windowMs;
   }
 
-  async checkLimit(key: string): Promise<boolean> {
+  checkLimit(key: string): boolean {
     const now = Date.now();
     const requests = this.requests.get(key) || [];
 
@@ -36,7 +36,7 @@ export class RateLimiter {
     return true;
   }
 
-  async getRemainingRequests(key: string): Promise<number> {
+  getRemainingRequests(key: string): number {
     const now = Date.now();
     const requests = this.requests.get(key) || [];
     const validRequests = requests.filter((timestamp) => now - timestamp < this.windowMs);

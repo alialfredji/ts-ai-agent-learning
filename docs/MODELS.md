@@ -2,11 +2,13 @@
 
 This curriculum supports multiple AI model providers through a unified abstraction layer.
 
+**Updated October 2025** - Latest models and pricing.
+
 ## Supported Providers
 
-- **OpenAI**: GPT-4, GPT-3.5
-- **Anthropic**: Claude 3 (Opus, Sonnet, Haiku)
-- **Google**: Gemini Pro
+- **OpenAI**: GPT-4o, GPT-4 Turbo, GPT-4o-mini
+- **Anthropic**: Claude 3.5 Sonnet, Claude 3 Opus/Haiku
+- **Google**: Gemini 1.5 Pro, Gemini 1.5 Flash
 
 ## Quick Start
 
@@ -25,7 +27,7 @@ All projects will use this provider by default.
 Override for a specific run:
 
 ```bash
-MODEL_PROVIDER=anthropic pnpm tsx beginner/01-tool-calling-cli/index.ts
+MODEL_PROVIDER=anthropic pnpm tsx curriculum/beginner/01-tool-calling-cli/index.ts
 ```
 
 ### Programmatic Usage
@@ -59,38 +61,40 @@ console.log(`Tokens used: ${response.usage.totalTokens}`);
 
 ### OpenAI
 
-**Models**:
+**Models** (October 2025):
 
-- `gpt-4-turbo-preview` (default, most capable)
-- `gpt-4` (stable, high quality)
-- `gpt-3.5-turbo` (fast, cost-effective)
+- `gpt-4o` (default, most capable, multimodal)
+- `gpt-4-turbo` (high quality, 128K context)
+- `gpt-4o-mini` (fast, cost-effective)
 
 **Configuration**:
 
 ```bash
 MODEL_PROVIDER=openai
 OPENAI_API_KEY=sk-...
-OPENAI_MODEL=gpt-4-turbo-preview  # optional override
+OPENAI_MODEL=gpt-4o  # optional override
 ```
 
 **Features**:
 
-- ✅ Function calling
+- ✅ Function calling (native)
 - ✅ Streaming
 - ✅ JSON mode
-- ✅ Vision (GPT-4V)
+- ✅ Vision (GPT-4o)
+- ✅ 128K context window
 
-**Costs** (per 1M tokens):
+**Costs** (per 1M tokens, approximate):
 
+- GPT-4o: $2.50 input / $10 output
 - GPT-4 Turbo: $10 input / $30 output
-- GPT-3.5 Turbo: $0.50 input / $1.50 output
+- GPT-4o-mini: $0.15 input / $0.60 output
 
 ### Anthropic (Claude)
 
-**Models**:
+**Models** (October 2025):
 
-- `claude-3-opus-20240229` (most capable)
-- `claude-3-sonnet-20240229` (balanced)
+- `claude-3-5-sonnet-20241022` (latest, most capable)
+- `claude-3-opus-20240229` (previous flagship)
 - `claude-3-haiku-20240307` (fast, affordable)
 
 **Configuration**:
@@ -98,58 +102,63 @@ OPENAI_MODEL=gpt-4-turbo-preview  # optional override
 ```bash
 MODEL_PROVIDER=anthropic
 ANTHROPIC_API_KEY=sk-ant-...
-ANTHROPIC_MODEL=claude-3-opus-20240229  # optional
+ANTHROPIC_MODEL=claude-3-5-sonnet-20241022  # optional
 ```
 
 **Features**:
 
-- ✅ Function calling
+- ✅ Function calling (excellent)
 - ✅ Streaming
 - ✅ 200K context window
 - ✅ Vision
+- ✅ Computer use (beta)
 
-**Costs** (per 1M tokens):
+**Costs** (per 1M tokens, approximate):
 
+- Claude 3.5 Sonnet: $3 input / $15 output
 - Claude 3 Opus: $15 input / $75 output
-- Claude 3 Sonnet: $3 input / $15 output
 - Claude 3 Haiku: $0.25 input / $1.25 output
 
 ### Google (Gemini)
 
-**Models**:
+**Models** (October 2025):
 
-- `gemini-pro` (default)
-- `gemini-pro-vision` (multimodal)
+- `gemini-1.5-pro` (most capable, 2M context)
+- `gemini-1.5-flash` (fast, cost-effective)
 
 **Configuration**:
 
 ```bash
 MODEL_PROVIDER=google
 GOOGLE_API_KEY=...
-GOOGLE_MODEL=gemini-pro  # optional
+GOOGLE_MODEL=gemini-1.5-pro  # optional
 ```
 
 **Features**:
 
-- ✅ Function calling
+- ✅ Function calling (improved)
 - ✅ Streaming
-- ✅ Multimodal (text + images)
-- ⚠️ Limited function calling vs OpenAI/Anthropic
+- ✅ Multimodal (text + images + video)
+- ✅ 2M token context window (Pro)
+- ✅ Generous free tier
 
-**Costs** (per 1M tokens):
+**Costs** (per 1M tokens, approximate):
 
-- Gemini Pro: $0.50 input / $1.50 output (generous free tier)
+- Gemini 1.5 Pro: $1.25 input / $5 output
+- Gemini 1.5 Flash: $0.075 input / $0.30 output
+- **Note**: Generous free tier available
 
-## Provider Comparison
+## Provider Comparison (October 2025)
 
-| Feature          | OpenAI    | Anthropic | Google    |
-| ---------------- | --------- | --------- | --------- |
-| Function calling | Excellent | Excellent | Good      |
-| Context window   | 128K      | 200K      | 32K       |
-| Streaming        | Yes       | Yes       | Yes       |
-| Cost (relative)  | Medium    | High      | Low       |
-| Latency          | Fast      | Fast      | Very Fast |
-| Quality          | Excellent | Excellent | Good      |
+| Feature          | OpenAI (GPT-4o) | Anthropic (Claude 3.5) | Google (Gemini 1.5) |
+| ---------------- | --------------- | ---------------------- | ------------------- |
+| Function calling | Excellent       | Excellent              | Very Good           |
+| Context window   | 128K            | 200K                   | 2M                  |
+| Streaming        | Yes             | Yes                    | Yes                 |
+| Cost (relative)  | Medium          | Medium                 | Low                 |
+| Latency          | Fast            | Fast                   | Very Fast           |
+| Quality          | Excellent       | Excellent              | Very Good           |
+| Multimodal       | Yes             | Yes                    | Yes (extensive)     |
 
 ## Switching Providers
 
@@ -204,28 +213,29 @@ console.log(`Daily spend: $${summary.dailySpend.toFixed(2)}`);
 console.log(`Remaining: $${summary.remainingBudget.toFixed(2)}`);
 ```
 
-### Choose Cost-Effective Models
+### Choose Cost-Effective Models (October 2025)
 
-For development:
+For development and prototyping:
 
-- OpenAI: `gpt-3.5-turbo`
+- OpenAI: `gpt-4o-mini` (best value)
 - Anthropic: `claude-3-haiku-20240307`
-- Google: `gemini-pro` (free tier)
+- Google: `gemini-1.5-flash` (free tier available)
 
 For production:
 
-- OpenAI: `gpt-4-turbo-preview`
-- Anthropic: `claude-3-opus-20240229` or `claude-3-sonnet-20240229`
-- Google: `gemini-pro` (cost-effective)
+- OpenAI: `gpt-4o` (best overall)
+- Anthropic: `claude-3-5-sonnet-20241022` (excellent reasoning)
+- Google: `gemini-1.5-pro` (cost-effective, huge context)
 
-## Best Practices
+## Best Practices (October 2025)
 
-1. **Start with GPT-3.5-turbo** for rapid development
-2. **Upgrade to GPT-4 or Claude** when quality matters
-3. **Use Gemini** for cost-sensitive applications
+1. **Start with GPT-4o-mini or Gemini 1.5 Flash** for rapid development
+2. **Upgrade to GPT-4o or Claude 3.5 Sonnet** when quality matters
+3. **Use Gemini 1.5 Pro** for very long context or cost-sensitive applications
 4. **Always set budget guards** in production
 5. **Monitor token usage** with the token logger
-6. **Test with multiple providers** to find the best fit
+6. **Test with multiple providers** to find the best fit for your use case
+7. **Consider Gemini 1.5 Pro** for tasks requiring 1M+ token context windows
 
 ## Custom Provider
 

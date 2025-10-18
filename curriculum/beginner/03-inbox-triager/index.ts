@@ -4,7 +4,7 @@
  * Categorizes and prioritizes emails using structured outputs.
  */
 
-import { getModelProvider } from '../../src/lib/models/provider.js';
+import { getModelProvider } from '../../../src/lib/models/provider.js';
 import { triageEmailSchema, type TriageResult } from './schemas.js';
 import { sampleEmails } from './sample-emails.js';
 

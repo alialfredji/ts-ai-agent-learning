@@ -10,7 +10,7 @@ import { globalBudgetGuard } from '../../src/lib/security/budget-guard.js';
 
 async function runAgent(userInput: string) {
   // Rate limiting check
-  const canProceed = await globalRateLimiter.checkLimit('user-1');
+  const canProceed = globalRateLimiter.checkLimit('user-1');
   if (!canProceed) {
     throw new Error('Rate limit exceeded. Please try again later.');
   }
@@ -25,7 +25,7 @@ async function runAgent(userInput: string) {
       1000, // estimated input tokens
       500 // estimated output tokens
     );
-    const withinBudget = await globalBudgetGuard.checkBudget(estimate.estimatedCost);
+    const withinBudget = globalBudgetGuard.checkBudget(estimate.estimatedCost);
     if (!withinBudget) {
       throw new Error('Daily budget exceeded');
     }
