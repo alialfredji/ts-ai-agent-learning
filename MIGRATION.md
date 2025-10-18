@@ -85,15 +85,15 @@ pnpm typecheck
 
 ### Major Version Updates
 
-| Package | Old Version | New Version | Notes |
-|---------|-------------|-------------|-------|
-| TypeScript | 5.3 | 5.6 | New language features |
-| ESLint | 8.56 | 9.14 | Flat config format |
-| Vitest | 1.2 | 2.1 | Breaking changes in API |
-| Vercel AI SDK | 3.0 | 4.0 | Improved streaming |
-| LangChain | 0.1 | 0.3 | New LangGraph features |
-| Anthropic SDK | 0.20 | 0.36 | Claude 3.5 support |
-| OpenAI SDK | 4.28 | 4.67 | GPT-4o support |
+| Package       | Old Version | New Version | Notes                   |
+| ------------- | ----------- | ----------- | ----------------------- |
+| TypeScript    | 5.3         | 5.6         | New language features   |
+| ESLint        | 8.56        | 9.14        | Flat config format      |
+| Vitest        | 1.2         | 2.1         | Breaking changes in API |
+| Vercel AI SDK | 3.0         | 4.0         | Improved streaming      |
+| LangChain     | 0.1         | 0.3         | New LangGraph features  |
+| Anthropic SDK | 0.20        | 0.36        | Claude 3.5 support      |
+| OpenAI SDK    | 4.28        | 4.67        | GPT-4o support          |
 
 ### New Packages
 
@@ -164,7 +164,7 @@ If you're using GitHub Actions or other CI/CD:
     with:
 -     node-version: 20
 +     node-version: 22
-      
+
   - name: Setup pnpm
     uses: pnpm/action-setup@v2
     with:
@@ -201,6 +201,7 @@ Now supporting the latest models as of October 2025:
 **Cause**: Import paths haven't been updated for new structure
 
 **Solution**: Add `curriculum/` prefix to imports:
+
 ```typescript
 // Old
 import something from '../beginner/...';
@@ -214,6 +215,7 @@ import something from '../curriculum/beginner/...';
 **Cause**: Old `.eslintrc.json` still present
 
 **Solution**: Remove old config and ensure `eslint.config.js` exists:
+
 ```bash
 rm .eslintrc.json
 git checkout eslint.config.js
@@ -224,6 +226,7 @@ git checkout eslint.config.js
 **Cause**: Stricter TypeScript checks in 5.6
 
 **Solution**: Review and fix type errors, or temporarily adjust `tsconfig.json`:
+
 ```json
 {
   "compilerOptions": {

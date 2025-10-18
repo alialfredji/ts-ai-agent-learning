@@ -203,14 +203,14 @@ psql $DATABASE_URL -c "SELECT version();"
 
 ## Technology Stack (v2.0)
 
-| Tool | Version | Purpose |
-|------|---------|---------|
-| Node.js | 22 LTS | Runtime |
-| TypeScript | 5.6+ | Language |
-| pnpm | 9.12+ | Package manager |
-| ESLint | 9+ | Linting |
-| Vitest | 2+ | Testing |
-| LangChain | 0.3+ | AI orchestration |
+| Tool       | Version | Purpose          |
+| ---------- | ------- | ---------------- |
+| Node.js    | 22 LTS  | Runtime          |
+| TypeScript | 5.6+    | Language         |
+| pnpm       | 9.12+   | Package manager  |
+| ESLint     | 9+      | Linting          |
+| Vitest     | 2+      | Testing          |
+| LangChain  | 0.3+    | AI orchestration |
 
 ## Next Steps
 
