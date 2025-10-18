@@ -1,0 +1,74 @@
+name: Agent Evaluations
+
+on:
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    # Run daily at 6 AM UTC
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  evaluate:
+    name: Run Agent Evaluations
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run evaluations
+        run: pnpm tsx templates/eval-harness/run-eval.ts
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          LANGCHAIN_API_KEY: ${{ secrets.LANGCHAIN_API_KEY }}
+          LANGCHAIN_TRACING_V2: 'true'
+          LANGCHAIN_PROJECT: ai-agents-evals
+
+      - name: Upload results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-results
+          path: eval-results/
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            // Read eval results
+            let comment = '## 🧪 Agent Evaluation Results\n\n';
+            comment += 'View detailed traces in [LangSmith](https://smith.langchain.com)\n\n';
+            
+            // Add summary if available
+            if (fs.existsSync('eval-results/summary.json')) {
+              const summary = JSON.parse(fs.readFileSync('eval-results/summary.json', 'utf8'));
+              comment += '### Summary\n';
+              comment += `- Tests run: ${summary.total}\n`;
+              comment += `- Passed: ${summary.passed}\n`;
+              comment += `- Failed: ${summary.failed}\n`;
+              comment += `- Success rate: ${summary.successRate}%\n`;
+            }
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });

@@ -1,0 +1,10 @@
+{
+  "name": "ai-agents-aws-infra",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "@pulumi/pulumi": "^3.100.0",
+    "@pulumi/aws": "^6.15.0",
+    "@pulumi/awsx": "^2.5.0"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "name": "typescript-ai-agents-curriculum",
+  "version": "1.0.0",
+  "description": "Production-grade TypeScript AI Agents curriculum with infrastructure templates",
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "packageManager": "pnpm@8.15.0",
+  "scripts": {
+    "dev": "tsx watch",
+    "build": "tsc",
+    "test": "vitest --passWithNoTests",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint . --ext .ts,.tsx",
+    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "format": "prettier --write \"**/*.{ts,tsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,json,md}\"",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist node_modules"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.20.0",
+    "@google/generative-ai": "^0.7.0",
+    "@langchain/core": "^0.1.60",
+    "@langchain/langgraph": "^0.0.19",
+    "@langchain/openai": "^0.0.28",
+    "@opentelemetry/api": "^1.8.0",
+    "@opentelemetry/sdk-node": "^0.49.0",
+    "ai": "^3.0.0",
+    "convex": "^1.10.0",
+    "langchain": "^0.1.30",
+    "langsmith": "^0.1.0",
+    "openai": "^4.28.0",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.0",
+    "prettier": "^3.2.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.2.0"
+  },
+  "keywords": [
+    "ai",
+    "agents",
+    "typescript",
+    "openai",
+    "anthropic",
+    "google",
+    "langchain",
+    "langgraph",
+    "curriculum"
+  ],
+  "license": "MIT"
+}
