@@ -1,0 +1,76 @@
+name: Deploy with Pulumi
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      stack:
+        description: 'Pulumi stack to deploy'
+        required: true
+        type: choice
+        options:
+          - aws-dev
+          - aws-prod
+          - gcp-dev
+          - gcp-prod
+
+jobs:
+  deploy:
+    name: Deploy to ${{ github.event.inputs.stack || 'aws-dev' }}
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write # Required for OIDC
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Configure AWS Credentials (OIDC)
+        if: startsWith(github.event.inputs.stack, 'aws-') || github.event.inputs.stack == ''
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - name: Authenticate to Google Cloud (OIDC)
+        if: startsWith(github.event.inputs.stack, 'gcp-')
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - name: Deploy with Pulumi
+        uses: pulumi/actions@v5
+        with:
+          command: up
+          stack-name: ${{ github.event.inputs.stack || 'aws-dev' }}
+          work-dir: infra/pulumi/${{ startsWith(github.event.inputs.stack, 'gcp-') && 'gcp' || 'aws' }}
+        env:
+          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+
+      - name: Export outputs
+        run: |
+          cd infra/pulumi/${{ startsWith(github.event.inputs.stack, 'gcp-') && 'gcp' || 'aws' }}
+          pulumi stack output --json > outputs.json
+          cat outputs.json
+
+      - name: Post deployment notification
+        if: success()
+        run: |
+          echo "Deployment successful! 🚀"
+          # Add Slack/Discord notification here if desired

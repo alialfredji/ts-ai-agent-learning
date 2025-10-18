@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  # PostgreSQL with pgvector for RAG
+  postgres:
+    image: ankane/pgvector:latest
+    container_name: ai-agents-postgres
+    environment:
+      POSTGRES_DB: agents_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # OpenTelemetry Collector
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    container_name: ai-agents-otel-collector
+    command: ['--config=/etc/otel-collector-config.yml']
+    volumes:
+      - ./otel-collector-config.yml:/etc/otel-collector-config.yml
+    ports:
+      - '4317:4317' # OTLP gRPC
+      - '4318:4318' # OTLP HTTP
+      - '8888:8888' # Prometheus metrics
+      - '8889:8889' # Prometheus exporter
+    depends_on:
+      - jaeger
+
+  # Jaeger for trace visualization
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: ai-agents-jaeger
+    ports:
+      - '16686:16686' # Jaeger UI
+      - '14250:14250' # Jaeger gRPC
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+
+  # API service (your agents)
+  api:
+    build:
+      context: ../..
+      dockerfile: infra/docker/Dockerfile
+    container_name: ai-agents-api
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/agents_db
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
+      - MODEL_PROVIDER=${MODEL_PROVIDER:-openai}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+    ports:
+      - '3000:3000'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      otel-collector:
+        condition: service_started
+    volumes:
+      - ../../:/app
+      - /app/node_modules
+
+volumes:
+  postgres_data:
