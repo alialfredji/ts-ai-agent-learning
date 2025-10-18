@@ -41,11 +41,13 @@ resource "google_sql_database_instance" "main" {
   settings {
     tier = var.db_tier
 
+    # WARNING: This allows public access for demo purposes only
+    # In production, use Cloud SQL Proxy or restrict to specific IPs
     ip_configuration {
       ipv4_enabled = true
 
       authorized_networks {
-        name  = "allow-all"
+        name  = "allow-all-demo-only"
         value = "0.0.0.0/0"
       }
     }

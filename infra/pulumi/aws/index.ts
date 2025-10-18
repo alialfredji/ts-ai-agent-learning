@@ -6,6 +6,12 @@
  * - RDS PostgreSQL with pgvector (or reference to Neon/Supabase)
  * - SSM Parameter Store for secrets
  * - CloudWatch Logs
+ * 
+ * SECURITY NOTE: This is a learning example. In production:
+ * - Use IAM authentication for database access
+ * - Store DATABASE_URL components separately, not as a single string
+ * - Enable VPC endpoints and private networking
+ * - Use AWS Secrets Manager rotation for credentials
  */
 
 import * as pulumi from '@pulumi/pulumi';
@@ -111,11 +117,17 @@ const appRunner = new aws.apprunner.Service(`${projectName}-service`, {
         runtimeEnvironmentVariables: {
           NODE_ENV: 'production',
           MODEL_PROVIDER: config.get('modelProvider') || 'openai',
-          DATABASE_URL: pulumi.interpolate`postgresql://postgres:${config.requireSecret('dbPassword')}@${db.endpoint}/agents_db`,
+          // NOTE: In production, use connection string without embedded password
+          // and configure Cloud SQL Auth Proxy or VPC peering instead
+          DATABASE_HOST: db.endpoint,
+          DATABASE_NAME: db.dbName,
+          DATABASE_USER: 'postgres',
         },
         runtimeEnvironmentSecrets: {
           OPENAI_API_KEY: openaiKey.arn,
           ANTHROPIC_API_KEY: anthropicKey.arn,
+          // Database password stored securely in SSM Parameter Store
+          DATABASE_PASSWORD: pulumi.interpolate`arn:aws:ssm:${aws.getRegionOutput().name}:${aws.getCallerIdentityOutput().accountId}:parameter/${projectName}/${stack}/db-password`,
         },
       },
     },

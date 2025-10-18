@@ -206,6 +206,11 @@ export class GoogleProvider implements ModelProvider {
         parts: [{ text: m.content }],
       }));
 
+    // Validate we have at least one non-system message
+    if (chatMessages.length === 0) {
+      throw new Error('No messages to process. At least one non-system message is required.');
+    }
+
     const chat = model.startChat({
       history: chatMessages.slice(0, -1),
       generationConfig: {

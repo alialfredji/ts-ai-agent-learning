@@ -6,6 +6,12 @@
  * - Cloud SQL PostgreSQL with pgvector
  * - Secret Manager for secrets
  * - Cloud Logging
+ * 
+ * SECURITY NOTE: This is a learning example. In production:
+ * - Use Cloud SQL Auth Proxy instead of public IP
+ * - Enable Cloud SQL IAM authentication
+ * - Restrict network access to specific IP ranges
+ * - Use VPC Service Controls
  */
 
 import * as pulumi from '@pulumi/pulumi';

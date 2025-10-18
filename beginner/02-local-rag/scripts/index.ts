@@ -12,7 +12,16 @@ import { EmbeddingGenerator, chunkText } from '../lib/embeddings.js';
 async function indexDocuments() {
   console.log('🚀 Starting document indexing...\n');
 
-  const vectorStore = new VectorStore(process.env.DATABASE_URL || '');
+  // Validate DATABASE_URL is set
+  if (!process.env.DATABASE_URL) {
+    throw new Error(
+      'DATABASE_URL environment variable is required. ' +
+      'Please set it in your .env file or environment. ' +
+      'Example: DATABASE_URL=postgresql://user:password@localhost:5432/agents_db'
+    );
+  }
+
+  const vectorStore = new VectorStore(process.env.DATABASE_URL);
   await vectorStore.initialize();
 
   const embedder = new EmbeddingGenerator();
