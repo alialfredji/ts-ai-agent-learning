@@ -1,0 +1,9 @@
+{
+  "name": "ai-agents-gcp-infra",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "@pulumi/pulumi": "^3.100.0",
+    "@pulumi/gcp": "^7.10.0"
+  }
+}

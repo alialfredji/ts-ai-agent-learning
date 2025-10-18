@@ -1,0 +1,3 @@
+name: ai-agents-aws
+runtime: nodejs
+description: AI Agents infrastructure on AWS
