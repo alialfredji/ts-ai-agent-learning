@@ -23,5 +23,13 @@
     "@typescript-eslint/no-unsafe-return": "off",
     "@typescript-eslint/no-unsafe-argument": "off"
   },
-  "ignorePatterns": ["dist", "node_modules", "*.js"]
+  "ignorePatterns": [
+    "dist",
+    "node_modules",
+    "*.js",
+    "**/convex/**",
+    "infra/pulumi/**",
+    "beginner/02-local-rag/**",
+    "intermediate/01-research-agent/**"
+  ]
 }
