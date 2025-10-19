@@ -13,7 +13,7 @@
 
 import OpenAI from 'openai';
 import Anthropic from '@anthropic-ai/sdk';
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenAI } from '@google/genai';
 
 export interface Message {
   role: 'system' | 'user' | 'assistant';
@@ -190,22 +190,20 @@ export class AnthropicProvider implements ModelProvider {
  */
 export class GoogleProvider implements ModelProvider {
   name = 'google';
-  private client: GoogleGenerativeAI;
+  private client: GoogleGenAI;
   private model: string;
 
   constructor(apiKey?: string, model?: string) {
-    this.client = new GoogleGenerativeAI(apiKey || process.env.GOOGLE_API_KEY || '');
-    this.model = model || process.env.GOOGLE_MODEL || 'gemini-pro';
+    this.client = new GoogleGenAI({ apiKey: apiKey || process.env.GOOGLE_API_KEY || '' });
+    this.model = model || process.env.GOOGLE_MODEL || 'gemini-2.0-flash-001';
   }
 
   async complete(request: CompletionRequest): Promise<CompletionResponse> {
     const { messages, maxTokens, temperature, stopSequences } = request;
 
-    const model = this.client.getGenerativeModel({ model: this.model });
-
     // Convert messages to Gemini format
     const systemMessage = messages.find((m) => m.role === 'system')?.content;
-    const chatMessages = messages
+    const contents = messages
       .filter((m) => m.role !== 'system')
       .map((m) => ({
         role: m.role === 'assistant' ? 'model' : 'user',
@@ -213,27 +211,26 @@ export class GoogleProvider implements ModelProvider {
       }));
 
     // Validate we have at least one non-system message
-    if (chatMessages.length === 0) {
+    if (contents.length === 0) {
       throw new Error('No messages to process. At least one non-system message is required.');
     }
 
-    const chat = model.startChat({
-      history: chatMessages.slice(0, -1),
-      generationConfig: {
+    // Prepend system message to first user message if present
+    if (systemMessage && contents.length > 0 && contents[0].role === 'user') {
+      contents[0].parts[0].text = `${systemMessage}\n\n${contents[0].parts[0].text}`;
+    }
+
+    const result = await this.client.models.generateContent({
+      model: this.model,
+      contents: contents as any,
+      config: {
         maxOutputTokens: maxTokens,
         temperature,
         stopSequences,
       },
     });
 
-    const lastMessage = chatMessages[chatMessages.length - 1];
-    const prompt = systemMessage
-      ? `${systemMessage}\n\n${lastMessage.parts[0].text}`
-      : lastMessage.parts[0].text;
-
-    const result = await chat.sendMessage(prompt);
-    const response = result.response;
-    const text = response.text();
+    const text = result.text || '';
 
     // Note: Gemini doesn't provide detailed token counts in all cases
     return {
@@ -250,34 +247,33 @@ export class GoogleProvider implements ModelProvider {
   async *streamComplete(request: CompletionRequest): AsyncGenerator<string, void, unknown> {
     const { messages, maxTokens, temperature, stopSequences } = request;
 
-    const model = this.client.getGenerativeModel({ model: this.model });
-
     const systemMessage = messages.find((m) => m.role === 'system')?.content;
-    const chatMessages = messages
+    const contents = messages
       .filter((m) => m.role !== 'system')
       .map((m) => ({
         role: m.role === 'assistant' ? 'model' : 'user',
         parts: [{ text: m.content }],
       }));
 
-    const chat = model.startChat({
-      history: chatMessages.slice(0, -1),
-      generationConfig: {
+    // Prepend system message to first user message if present
+    if (systemMessage && contents.length > 0 && contents[0].role === 'user') {
+      contents[0].parts[0].text = `${systemMessage}\n\n${contents[0].parts[0].text}`;
+    }
+
+    const response = await this.client.models.generateContentStream({
+      model: this.model,
+      contents: contents as any,
+      config: {
         maxOutputTokens: maxTokens,
         temperature,
         stopSequences,
       },
     });
 
-    const lastMessage = chatMessages[chatMessages.length - 1];
-    const prompt = systemMessage
-      ? `${systemMessage}\n\n${lastMessage.parts[0].text}`
-      : lastMessage.parts[0].text;
-
-    const result = await chat.sendMessageStream(prompt);
-
-    for await (const chunk of result.stream) {
-      yield chunk.text();
+    for await (const chunk of response) {
+      if (chunk.text) {
+        yield chunk.text;
+      }
     }
   }
 }
